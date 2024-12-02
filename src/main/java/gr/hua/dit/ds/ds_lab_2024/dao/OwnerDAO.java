@@ -1,0 +1,11 @@
+package gr.hua.dit.ds.ds_lab_2024.dao;
+
+import gr.hua.dit.ds.ds_lab_2024.entities.Application;
+import gr.hua.dit.ds.ds_lab_2024.entities.Property;
+
+import java.util.List;
+
+public interface OwnerDAO {
+    public List<Property> getOwnersProperties(Integer ownerId);
+    public List<Application> getOwnersApplications(Integer ownerId);
+}
