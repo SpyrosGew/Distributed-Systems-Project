@@ -21,19 +21,20 @@ public class OwnerDAOImpl implements OwnerDAO {
 
     @Override
     @Transactional
-    public List<Property> getOwnersProperties() {
+    public List<Property> getOwnersProperties(Integer ownerId) {
         TypedQuery<Property> query = entityManager.createQuery(
-                "SELECT p FROM Property p JOIN p.owner o", Property.class
+                "SELECT p FROM Property p JOIN Owner o on p.owner.id = o.id", Property.class
         );
         return query.getResultList();
     }
 
     @Override
     @Transactional
-    public List<Application> getOwnersApplications() {
+    public List<Application> getOwnersApplications(Integer ownerId) {
         TypedQuery<Application> query = entityManager.createQuery(
-                "SELECT a FROM Application a JOIN a.owner o", Application.class
+                "SELECT a FROM Application a, Owner o WHERE o.id = :ownerId", Application.class
         );
+        query.setParameter("ownerId", ownerId);
         return query.getResultList();
     }
 }

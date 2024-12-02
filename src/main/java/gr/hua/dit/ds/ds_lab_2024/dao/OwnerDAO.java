@@ -6,6 +6,6 @@ import gr.hua.dit.ds.ds_lab_2024.entities.Property;
 import java.util.List;
 
 public interface OwnerDAO {
-    public List<Property> getOwnersProperties();
-    public List<Application> getOwnersApplications();
+    public List<Property> getOwnersProperties(Integer ownerId);
+    public List<Application> getOwnersApplications(Integer ownerId);
 }
