@@ -16,6 +16,8 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "username"),
                 @UniqueConstraint(columnNames = "email")
         })
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "user_type")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
