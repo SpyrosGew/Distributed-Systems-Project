@@ -3,13 +3,13 @@ package gr.hua.dit.ds.ds_lab_2024.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 /*
 *  renter owner */
 @Entity
 @Table
 public class Application {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
