@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -13,10 +14,15 @@
         <h3 class="masthead-brand">Cover</h3>
         <nav class="nav nav-masthead justify-content-center">
             <a class="nav-link active" href="/">Home</a>
-            <a class="nav-link" href="/property">Properties</a>
+            <a sec:authorize="isAuthenticated()" class="nav-link" href="/property">Properties</a>
             <a class="nav-link" href="/renter">Renter</a>
             <a class="nav-link" href="/course">Courses</a>
             <a class="nav-link" href="#">Contact</a>
+            <a sec:authorize="isAuthenticated()" class = "nav-link">
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit"  class="btn btn-primary" value="Sign Out"/>
+                </form>
+            </a>
         </nav>
     </div>
 </header>

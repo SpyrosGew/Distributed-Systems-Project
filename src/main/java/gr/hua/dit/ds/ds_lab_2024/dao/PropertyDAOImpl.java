@@ -37,4 +37,6 @@ public class PropertyDAOImpl implements PropertyDAO {
         query.setParameter("id", id);
         return query.getResultList();
     }
+
+
 }
