@@ -19,12 +19,6 @@ public class OwnerController {
     }
 
 
-    @RequestMapping
-    public String ownerMenu(Model model) {
-        return "Owner/ownerMenu";
-    }
-
-
 ////    public String showOwnerProperties(Model model) {}
 
 
