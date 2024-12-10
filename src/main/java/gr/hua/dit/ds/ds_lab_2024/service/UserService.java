@@ -80,7 +80,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public Object getUser(Long userId) {
+    public Object getUser(Integer userId) {
         return userRepository.findById(userId).get();
     }
 
