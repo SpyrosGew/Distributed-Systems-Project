@@ -2,6 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       layout:decorate="~{page_layout/layout}">
 
 <head>
@@ -26,14 +27,14 @@
                 <td th:text="${property.city}"></td>
                 <td th:text="${property.squareMeters}"></td>
                 <td th:text="${property.available}"></td>
-            </tr>
+                <td th:if="${user.id}"><a class="btn btn-info" th:href="@{/user/{id}(id=${user.id})}">Edit</a>
             </tbody>
         </table>
     </div>
     <div th:if="${ #lists.isEmpty(properties)}">
         No Properties found!
     </div>
-    <a href="/property/new" class="btn btn-primary" role="button">Add</a>
+    <a href="/property/new" sec:authorize="hasRole('OWNER')" class="btn btn-primary" role="button">Add</a>
 </div>
 </body>
 </html>

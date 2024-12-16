@@ -5,7 +5,8 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table
+@DiscriminatorValue("RENTER")
+@Table(name = "renters")
 public class Renter extends User{
 
 
