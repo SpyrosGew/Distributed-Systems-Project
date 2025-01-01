@@ -10,7 +10,9 @@ import java.util.List;
 public class Renter extends User{
 
 
-    public Renter(String name, String password, String email){
+
+
+    public Renter(String name, String email, String password){
         super(name, email,password);
     }
 

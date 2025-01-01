@@ -17,7 +17,7 @@ public class Owner extends User{
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Application> applications;
 
-    public Owner(String name, List<Property> properties, List<Application> applications, String password, String email) {
+    public Owner(String name, String email, String password, List<Property> properties, List<Application> applications) {
         super(name,email, password);
         this.properties = properties;
         this.applications = applications;
