@@ -32,7 +32,7 @@ public class PropertyController {
     }
 
     @PostMapping("/new")
-    public String saveStudent(@ModelAttribute("course") Property property, Model model) {
+    public String saveProperty(@ModelAttribute("course") Property property, Model model) {
         propertyService.saveProperty(property);
         model.addAttribute("courses", propertyService.getProperties());
         model.addAttribute("successMessage", "Property added successfully!");

@@ -10,6 +10,17 @@ import java.util.List;
 public class Renter extends User{
 
 
+    @OneToMany
+    @JoinColumn(name = "application_id")
+    private List<Application> applications;
+
+    public List<Application> getApplication() {
+        return applications;
+    }
+
+    public void setApplication(List <Application> applications) {
+        this.applications = applications;
+    }
 
 
     public Renter(String name, String email, String password){
