@@ -36,19 +36,30 @@ public class User {
     @Size(max = 120)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(	name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    private Status ApprovalStatus = Status.IN_PROCESS;
+
     public User() {
     }
 
-    public User(String username, String email, String password) {
+    public User(String username, String email, String password, Status ApprovalStatus) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.ApprovalStatus = ApprovalStatus;
+    }
+
+    public Status getApprovalStatus() {
+        return ApprovalStatus;
+    }
+
+    public void setApprovalStatus(Status ApprovalStatus) {
+        this.ApprovalStatus = ApprovalStatus;
     }
 
     public Integer getId() {

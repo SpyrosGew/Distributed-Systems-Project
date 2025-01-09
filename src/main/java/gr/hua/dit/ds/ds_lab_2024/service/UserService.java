@@ -42,6 +42,16 @@ public class UserService implements UserDetailsService {
         this.renterRepository = renterRepository;
     }
 
+
+    public Optional<User> authenticate(String username, String password) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+
+        if (userOptional.isEmpty() || !passwordEncoder.matches(password, userOptional.get().getPassword())) {
+            throw new UsernameNotFoundException("Invalid username or password");
+        }
+
+        return userOptional;
+    }
     @Transactional
     public Integer saveUser(User user) {
         String passwd= user.getPassword();
@@ -63,7 +73,6 @@ public class UserService implements UserDetailsService {
         user = userRepository.save(user);
         return user.getId();
     }
-
 
     @Override
     @Transactional

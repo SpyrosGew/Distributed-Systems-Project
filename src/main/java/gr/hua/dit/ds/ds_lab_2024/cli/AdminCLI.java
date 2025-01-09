@@ -4,74 +4,118 @@ import gr.hua.dit.ds.ds_lab_2024.entities.Owner;
 import gr.hua.dit.ds.ds_lab_2024.entities.Renter;
 import gr.hua.dit.ds.ds_lab_2024.entities.User;
 import gr.hua.dit.ds.ds_lab_2024.service.AdminService;
+import gr.hua.dit.ds.ds_lab_2024.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 @Component
 public class AdminCLI implements CommandLineRunner {
 
     private final AdminService adminService;
+    private final UserService userService;
+    private boolean isAuthenticated = false;
 
-    public AdminCLI(AdminService adminService){
+    public AdminCLI(AdminService adminService, UserService userService){
         this.adminService = adminService;
+        this.userService = userService;
     }
 
     @Override
     public void run(String... args) {
+        authenticateAdmin();
+
+        if(isAuthenticated){
+            Scanner scanner = new Scanner(System.in);
+            boolean exit = false;
+            while(!exit){
+
+                System.out.println("\n=== Admin Menu ===");
+                System.out.println("1. Validate new user Requests");
+                System.out.println("2. Approve/Decline new Properties");
+                System.out.println("3. Add new user manually");
+                System.out.println("4. Update a user's information");
+                System.out.println("5. Delete a Renter");
+                System.out.println("6. See all Renters");
+                System.out.println("7. See all Owners");
+                System.out.println("8. See all Users");
+                System.out.println("9. Exit");
+                System.out.print("Enter your choice: ");
+
+                int choice = Integer.parseInt(scanner.nextLine());
+
+                switch (choice){
+                    case 1:
+                        validateNewUsers();
+                        break;
+                    case 2:
+                        approveNewProperties();
+                        break;
+                    case 3:
+                        addNewUserManually();
+                        break;
+                    case 4:
+                        updateUserInfo();
+                        break;
+                    case 5:
+                        deleteRenter();
+                        break;
+                    case 6:
+                        seeAllRenters();
+                        break;
+                    case 7:
+                        seeAllOwners();
+                        break;
+                    case 8:
+                        seeAllUsers();
+                        break;
+                    case 9:
+                        exit = true;
+                        System.out.println("Exiting Admin Menu");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again");
+                        break;
+                }
+            }
+
+        }
+    }
+    private void authenticateAdmin() {
         Scanner scanner = new Scanner(System.in);
+
+
         boolean exit = false;
-
         while(!exit){
+            System.out.println("=== Admin Menu ===");
+            System.out.println("Enter your admin username: ");
+            String adminUsername = scanner.nextLine();
+            System.out.println("Enter your admin password: ");
+            String adminPassword = scanner.nextLine();
 
-            System.out.println("\n=== Admin Menu ===");
-            System.out.println("1. Validate new user Requests");
-            System.out.println("2. Approve/Decline new Properties");
-            System.out.println("3. Add new user manually");
-            System.out.println("4. Update a user's information");
-            System.out.println("5. Delete a Renter");
-            System.out.println("6. See all Renters");
-            System.out.println("7. See all Owners");
-            System.out.println("8. See all Users");
-            System.out.println("9. Exit");
-            System.out.print("Enter your choice: ");
+            try {
+                Optional<User> userOptional = userService.authenticate(adminUsername, adminPassword);
 
-            int choice = Integer.parseInt(scanner.nextLine());
+                if (userOptional.isPresent()) {
+                    User user = userOptional.get();
+                    boolean isAdmin = user.getRoles().stream()
+                            .anyMatch(role -> "ROLE_ADMIN".equals(role.getName()));
 
-            switch (choice){
-                case 1:
-                    validateNewUsers();
-                    break;
-                case 2:
-                    approveNewProperties();
-                    break;
-                case 3:
-                    addNewUserManually();
-                    break;
-                case 4:
-                    updateUserInfo();
-                    break;
-                case 5:
-                    deleteRenter();
-                    break;
-                case 6:
-                    seeAllRenters();
-                    break;
-                case 7:
-                    seeAllOwners();
-                    break;
-                case 8:
-                    seeAllUsers();
-                    break;
-                case 9:
-                    exit = true;
-                    System.out.println("Exiting Admin Menu");
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again");
-                    break;
+                    if (isAdmin) {
+                        System.out.println("Authentication successful! Welcome, Admin.");
+                        isAuthenticated = true;
+                        exit = true;
+                    } else {
+                        System.out.println("Access denied. You must have admin privileges.");
+                    }
+                } else {
+                    System.out.println("Authentication failed: Invalid username or password.");
+                }
+            } catch (Exception e) {
+                System.out.println("Authentication failed: " + e.getMessage());
             }
         }
     }
