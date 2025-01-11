@@ -24,7 +24,7 @@ public class Renter extends User{
 
 
     public Renter(String name, String email, String password){
-        super(name, email,password);
+        super(name, email,password,Status.IN_PROCESS);
     }
 
     public Renter() {

@@ -1,9 +1,8 @@
 package gr.hua.dit.ds.ds_lab_2024.service;
 
-import gr.hua.dit.ds.ds_lab_2024.entities.Owner;
-import gr.hua.dit.ds.ds_lab_2024.entities.Renter;
-import gr.hua.dit.ds.ds_lab_2024.entities.Role;
-import gr.hua.dit.ds.ds_lab_2024.entities.User;
+import gr.hua.dit.ds.ds_lab_2024.dao.UserDAO;
+import gr.hua.dit.ds.ds_lab_2024.dao.UserDAOImpl;
+import gr.hua.dit.ds.ds_lab_2024.entities.*;
 import gr.hua.dit.ds.ds_lab_2024.repositories.OwnerRepository;
 import gr.hua.dit.ds.ds_lab_2024.repositories.RenterRepository;
 import gr.hua.dit.ds.ds_lab_2024.repositories.RoleRepository;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,7 +27,7 @@ public class UserService implements UserDetailsService {
 
     private final OwnerRepository ownerRepository;
     private RenterRepository renterRepository;
-
+    private UserDAOImpl userDAO;
     private UserRepository userRepository;
 
     private RoleRepository roleRepository;
@@ -140,6 +140,10 @@ public class UserService implements UserDetailsService {
         ownerRepository.save(owner); // Save the Renter-specific data
     }
 
+    @Transactional
+    public List<Notification> getUsersNotification(Integer id){
+        return userDAO.getUserNotifications(id);
+    }
 
 
 

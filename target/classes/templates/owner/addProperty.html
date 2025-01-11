@@ -1,39 +1,27 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{page_layout/layout}">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Courses</title>
+  <title>Add Property</title>
 </head>
 <body>
-<div layout:fragment="main-content">
-  <div th:if="${ not#lists.isEmpty(properties)}">
-    <table class="table">
-      <thead>
-      <tr>
-        <th>Address</th>
-        <th>City</th>
-        <th>Square Meters</th>
-        <th>Actions</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="property : ${properties}">
-        <td th:text="${property.address}"></td>
-        <td th:text="${property.city}"></td>
-        <td th:text="${property.squareMeters}"></td>
-        <td th:text="${property.available}"></td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-  <div th:if="${ #lists.isEmpty(properties)}">
-    No Properties found!
-  </div>
-  <a href="/course/new" class="btn btn-primary" role="button">Add</a>
+<div>
+  <h3>Add Your Property</h3>
+  <form th:action="@{/property/new}" method="post" th:object="${property}">
+    <div class="form-group">
+      <label for="address">Address</label>
+      <input type="text" class="form-control" th:field="*{address}" id="address" placeholder="Enter property address" required />
+    </div>
+    <div class="form-group">
+      <label for="city">City</label>
+      <input type="text" class="form-control" th:field="*{city}" id="city" placeholder="Enter property city" required />
+    </div>
+    <div class="form-group">
+      <label for="squareMeters">Square Meters</label>
+      <input type="number" class="form-control" th:field="*{squareMeters}" id="squareMeters" placeholder="Enter property size" required />
+    </div>
+    <input type="submit" class="btn btn-primary" value="Add Property" />
+  </form>
 </div>
 </body>
 </html>
