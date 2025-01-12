@@ -18,7 +18,7 @@ public class Owner extends User{
     private List<Application> applications;
 
     public Owner(String name, String email, String password, List<Property> properties, List<Application> applications) {
-        super(name,email, password);
+        super(name,email, password, Status.IN_PROCESS);
         this.properties = properties;
         this.applications = applications;
     }

@@ -23,8 +23,9 @@ public class OwnerDAOImpl implements OwnerDAO {
     @Transactional
     public List<Property> getOwnersProperties(Integer ownerId) {
         TypedQuery<Property> query = entityManager.createQuery(
-                "SELECT p FROM Property p JOIN Owner o on p.owner.id = o.id", Property.class
+                "SELECT p FROM Property p, Owner o WHERE o.id = :ownerId", Property.class
         );
+        query.setParameter("ownerId", ownerId);
         return query.getResultList();
     }
 

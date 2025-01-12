@@ -42,7 +42,8 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    private Status ApprovalStatus = Status.IN_PROCESS;
+    @NotBlank
+    private Status approvalStatus = Status.IN_PROCESS;
 
     public User() {
     }
@@ -51,15 +52,15 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.ApprovalStatus = ApprovalStatus;
+        this.approvalStatus = ApprovalStatus;
     }
 
     public Status getApprovalStatus() {
-        return ApprovalStatus;
+        return approvalStatus;
     }
 
     public void setApprovalStatus(Status ApprovalStatus) {
-        this.ApprovalStatus = ApprovalStatus;
+        this.approvalStatus = ApprovalStatus;
     }
 
     public Integer getId() {
