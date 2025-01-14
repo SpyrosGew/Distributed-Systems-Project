@@ -7,6 +7,7 @@ import gr.hua.dit.ds.ds_lab_2024.entities.User;
 import gr.hua.dit.ds.ds_lab_2024.repositories.RoleRepository;
 import gr.hua.dit.ds.ds_lab_2024.repositories.UserRepository;
 import gr.hua.dit.ds.ds_lab_2024.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/*
+* Access OpenAPI Documentation
+*
+* http://localhost:8080/swagger-ui.html
+*
+*
+* */
 
 
 @Controller
@@ -32,6 +40,7 @@ public class UserController {
 
     }
 
+    @Operation(summary = "Register a new user", description = "Registers a user with the selected role")
     @GetMapping("/register")
     public String register(Model model) {
         User user = new User();
@@ -40,6 +49,7 @@ public class UserController {
         return "auth/register";
     }
 
+    @Operation(summary = "Save a new user", description = "Saves the user after registration and assigns the appropriate role")
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute User user, @RequestParam("role") String role, Model model) {
         System.out.println("Roles: " + user.getRoles());
@@ -67,6 +77,8 @@ public class UserController {
         model.addAttribute("msg", message);return  "index";
     }
 
+
+    @Operation(summary = "View all users", description = "Displays a list of all registered users. Requires admin privileges.")
     @Secured("ROLE_ADMIN")
     @GetMapping("/users")
     public String showUsers(Model model){

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import io.swagger.v3.oas.annotations.Operation;
+
 
 @Controller
 @RequestMapping("/property")
@@ -24,6 +26,7 @@ public class PropertyController {
         return "property/properties";
     }
 
+    @Operation(summary = "Show all properties", description = "Displays a list of all properties stored in the system.")
     @GetMapping("/new")
     public String addProperty(Model model) {
         Property property = new Property();
@@ -31,6 +34,7 @@ public class PropertyController {
         return "property/property_form";
     }
 
+    @Operation(summary = "Save new property", description = "Saves a newly created property to the system and displays the updated property list.")
     @PostMapping("/new")
     public String saveProperty(@ModelAttribute("course") Property property, Model model) {
         propertyService.saveProperty(property);
