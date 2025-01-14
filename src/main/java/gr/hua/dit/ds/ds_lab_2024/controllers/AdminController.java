@@ -4,6 +4,7 @@ import gr.hua.dit.ds.ds_lab_2024.entities.Status;
 import gr.hua.dit.ds.ds_lab_2024.entities.User;
 import gr.hua.dit.ds.ds_lab_2024.repositories.ApplicationRepository;
 import gr.hua.dit.ds.ds_lab_2024.repositories.UserRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,7 @@ public class AdminController {
         this.userRepository = userRepository;
         this.applicationRepository = applicationRepository;
     }
-
+    @Operation(summary = "Show user approvals", description = "Displays the list of users with 'IN_PROCESS' approval status awaiting approval.")
     @GetMapping("/aprovals")
     public String showUserApprovals(Model model) {
         // Fetch users with 'IN_PROCESS' status (pending approval)

@@ -6,8 +6,8 @@ import gr.hua.dit.ds.ds_lab_2024.entities.Notification;
 import gr.hua.dit.ds.ds_lab_2024.entities.User;
 import gr.hua.dit.ds.ds_lab_2024.dao.UserDAO;
 import gr.hua.dit.ds.ds_lab_2024.repositories.UserRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +25,7 @@ public class NotificationController {
         this.userRepository = userRepository;
         this.userDAO = userDAO;
     }
-
+    @Operation(summary = "Get user notifications", description = "Fetches the notifications for the authenticated user based on their username.")
     @GetMapping()
     public String getUserNotifications(Authentication authentication, Model model) {
         // Get the username from the authenticated user
