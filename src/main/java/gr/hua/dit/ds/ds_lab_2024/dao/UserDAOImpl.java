@@ -4,9 +4,10 @@ import gr.hua.dit.ds.ds_lab_2024.entities.Notification;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public class UserDAOImpl implements UserDAO{
 
     @PersistenceContext

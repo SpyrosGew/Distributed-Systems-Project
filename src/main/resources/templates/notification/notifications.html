@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      layout:decorate="~{page_layout/layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Notifications</title>
+</head>
+<body>
+<div layout:fragment="main-content">
+  <h1>Your Notifications</h1>
+  <ul>
+    <li th:each="notification : ${notifications}">
+      <!-- Display the body -->
+      <p th:text="${notification.toString()}"></p>
+    </li>
+  </ul>
+  <div th:if="${#lists.isEmpty(notifications)}">
+    <p>You have no notifications!</p>
+  </div>
+</div>
+</body>
+</html>
