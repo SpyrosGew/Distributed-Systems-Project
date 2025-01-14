@@ -27,6 +27,7 @@ public class Notification {
     private User receiver;
 
     @Column(name = "task")
+    @Enumerated(EnumType.ORDINAL) // Store the ordinal value of the enum
     private NotificationTask task;
 
     @Column(name = "status")
