@@ -1,9 +1,6 @@
 package gr.hua.dit.ds.ds_lab_2024.controllers;
 
-import gr.hua.dit.ds.ds_lab_2024.entities.Owner;
-import gr.hua.dit.ds.ds_lab_2024.entities.Renter;
-import gr.hua.dit.ds.ds_lab_2024.entities.Status;
-import gr.hua.dit.ds.ds_lab_2024.entities.User;
+import gr.hua.dit.ds.ds_lab_2024.entities.*;
 import gr.hua.dit.ds.ds_lab_2024.repositories.RoleRepository;
 import gr.hua.dit.ds.ds_lab_2024.repositories.UserRepository;
 import gr.hua.dit.ds.ds_lab_2024.service.UserService;
@@ -11,13 +8,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /*
-* Access OpenAPI Documentation
+* Access API Documentation
 *
 * http://localhost:8080/swagger-ui.html
 *
@@ -77,7 +73,6 @@ public class UserController {
         model.addAttribute("msg", message);return  "index";
     }
 
-
     @Operation(summary = "View all users", description = "Displays a list of all registered users. Requires admin privileges.")
     @Secured("ROLE_ADMIN")
     @GetMapping("/users")
@@ -87,5 +82,73 @@ public class UserController {
         return "auth/users";
     }
 
+    @Operation(summary = "View User", description = "Displays a register user. Requires admin privileges.")
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/user/{user_id}")
+    public String showUser(@PathVariable int user_id, Model model){
+        model.addAttribute("user", userService.getUser(user_id));
+        return "auth/user";
+    }
+
+    @Secured("ROLE_ADMIN")
+    @Operation(summary = "Update User", description = "Admin update's the user's information.")
+    @PostMapping("/user/{user_id}")
+    public String updateUser(@PathVariable int user_id, @RequestParam("role") String role, @ModelAttribute("user") User user, Model model){
+        User the_user = (User) userService.getUser(user_id);
+        the_user.setEmail(user.getEmail());
+        the_user.setUsername(user.getUsername());
+        userService.updateUser(the_user);
+        model.addAttribute("users", userService.getUsers());
+        return "auth/users";
+
+
+    }
+
+    @Operation(summary = "Approve a user", description = "Updates the approval status of a user with the specified ID to 'APPROVED'.")
+    @Secured("ROLE_ADMIN")
+    @PostMapping("/users/{id}")
+    public String approveUser(@PathVariable int id, Model model) {
+        // Fetch the user by ID
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("User not found"));
+        // Update the user's approval status
+        user.setApprovalStatus(Status.APPROVED);
+        userRepository.save(user);
+
+        model.addAttribute("successMessage", "User approved successfully!");
+
+        List<User> pendingUsers = userRepository.findAll();
+        model.addAttribute("pendingUsers", pendingUsers);
+        return "admin/userApprovals";
+    }
+
+    @Operation(summary = "Add a role to a user", description = "Assigns a specific role to a user by their user ID and role ID. The updated user information is then displayed.")
+    @GetMapping("/user/role/add/{user_id}/{role_id}")
+    public String addRoletoUser(@PathVariable int user_id, @PathVariable Integer role_id, Model model){
+        User user = (User) userService.getUser(user_id);
+        Role role = roleRepository.findById(role_id).get();
+        user.getRoles().add(role);
+        System.out.println("Roles: "+user.getRoles());
+        userService.updateUser(user);
+        model.addAttribute("users", userService.getUsers());
+        model.addAttribute("roles", roleRepository.findAll());
+        return "auth/users";
+
+    }
+
+
+    @Operation(summary = "Delete a role from a user", description = "Deletes a specific role from a user by their user ID and role ID. The updated user information is then displayed.")
+    @GetMapping("/user/role/delete/{user_id}/{role_id}")
+    public String deleteRolefromUser(@PathVariable int user_id, @PathVariable Integer role_id, Model model){
+        User user = (User) userService.getUser(user_id);
+        Role role = roleRepository.findById(role_id).get();
+        user.getRoles().remove(role);
+        System.out.println("Roles: "+user.getRoles());
+        userService.updateUser(user);
+        model.addAttribute("users", userService.getUsers());
+        model.addAttribute("roles", roleRepository.findAll());
+        return "auth/users";
+
+    }
 }
  

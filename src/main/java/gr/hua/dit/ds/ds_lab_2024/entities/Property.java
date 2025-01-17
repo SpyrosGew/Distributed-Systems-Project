@@ -27,6 +27,9 @@ public class Property {
     @JoinColumn(name = "owner_id") // This creates the foreign key column "owner_id" in the Property table
     private Owner owner;
 
+    @Column(name = "status")
+    private Status status = Status.IN_PROCESS;
+
     /* transient variable is not saved in the db, i use it to determine in real time which is the active
     * application based on the current datetime and the datetime on the application, will make functionality later*/
     private transient Application activeApplication;
@@ -77,6 +80,14 @@ public class Property {
 
     public boolean isAvailable() {
         return isAvailable;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public void setAvailable(boolean available) {
