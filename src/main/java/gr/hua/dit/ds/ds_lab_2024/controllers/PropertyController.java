@@ -1,11 +1,14 @@
 package gr.hua.dit.ds.ds_lab_2024.controllers;
 
+import gr.hua.dit.ds.ds_lab_2024.entities.Owner;
 import gr.hua.dit.ds.ds_lab_2024.entities.Property;
 import gr.hua.dit.ds.ds_lab_2024.entities.Status;
 import gr.hua.dit.ds.ds_lab_2024.entities.User;
 import gr.hua.dit.ds.ds_lab_2024.repositories.PropertyRepository;
+import gr.hua.dit.ds.ds_lab_2024.repositories.UserRepository;
 import gr.hua.dit.ds.ds_lab_2024.service.PropertyService;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +22,12 @@ import java.util.List;
 public class PropertyController {
     private final PropertyRepository propertyRepository;
     private PropertyService propertyService;
+    private UserRepository userRepository;
 
-    public PropertyController(PropertyService propertyService, PropertyRepository propertyRepository) {
+    public PropertyController(PropertyService propertyService, PropertyRepository propertyRepository, UserRepository userRepository) {
         this.propertyService = propertyService;
         this.propertyRepository = propertyRepository;
+        this.userRepository = userRepository;
     }
 
     @Operation(summary = "Show properties", description = "Display properties")
@@ -68,9 +73,16 @@ public class PropertyController {
 
     @Operation(summary = "Save new property", description = "Saves a newly created property to the system and displays the updated property list.")
     @PostMapping("/new")
-    public String saveProperty(@ModelAttribute("course") Property property, Model model) {
+    public String saveProperty(@ModelAttribute("course") Property property, Model model, Authentication authentication) {
+        // Get the username from the authenticated user
+        String username = authentication.getName(); // Should now return the username
+
+        // Fetch the user from the database
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalStateException("User not found"));
+        property.setOwner((Owner) currentUser);
         propertyService.saveProperty(property);
-        model.addAttribute("courses", propertyService.getProperties());
+        model.addAttribute("properties", propertyService.getProperties());
         model.addAttribute("successMessage", "Property added successfully!");
         return "property/properties";
     }
