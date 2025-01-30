@@ -22,11 +22,11 @@ public class OwnerController {
 
 ////    public String showOwnerProperties(Model model) {}
 
-    @Operation(summary = "Add new property", description = "Displays the form to add a new property to the system.")
-    @GetMapping("/new")
-    public String addProperty(Model model) {
-        Property property = new Property();
-        model.addAttribute("property", property);
-        return "Owner/addProperty";
-    }
+//    @Operation(summary = "Add new property", description = "Displays the form to add a new property to the system.")
+//    @GetMapping("/new")
+//    public String addProperty(Model model) {
+//        Property property = new Property();
+//        model.addAttribute("property", property);
+//        return "Owner/addProperty";
+//    }
 }
