@@ -5,31 +5,44 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Header</title>
+    <link rel="stylesheet" th:href="@{/css/cover.css}">
 </head>
 <body>
 
 <header class="masthead mb-auto" th:fragment="header">
-    <div class="inner">
-        <h3 class="masthead-brand">Cover</h3>
-        <nav class="nav nav-masthead justify-content-center">
-            <a class="nav-link" href="/" data-path="/" >Home</a>
+    <div class="header-container">
+        <!-- Rent.io Branding -->
+        <h3 class="masthead-brand">Rent.io</h3>
+
+        <!-- Navigation Bar -->
+        <nav class="nav nav-masthead">
+            <a class="nav-link" href="/" data-path="/">Home</a>
             <a class="nav-link" href="/property" data-path="/property">Properties</a>
             <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/users">Users</a>
-            <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/applictions">Applications</a>
+            <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/applications">Applications</a>
             <a class="nav-link" href="/notifications" data-path="/notifications">Notifications</a>
-            </a>
-            <a sec:authorize="!isAuthenticated()"  class="nav-link">
-                <a  class="nav-link" href="/login">Login</a>
-                <a  class="nav-link" href="/register">Register</a>
-            </a>
-            <a sec:authorize="isAuthenticated()"  class="nav-link">
-                <form th:action="@{/logout}" method="post">
-                    <input type="submit"  class="btn btn-primary" value="Sign Out"/>
+
+            <span sec:authorize="!isAuthenticated()">
+                <a class="nav-link" href="/login">Login</a>
+                <a class="nav-link" href="/register">Register</a>
+            </span>
+
+            <span sec:authorize="isAuthenticated()">
+                <form th:action="@{/logout}" method="post" class="logout-form">
+                    <input type="submit" class="btn btn-primary" value="Sign Out"/>
                 </form>
-            </a>
+            </span>
         </nav>
+
+        <!-- Profile Button with Image (Far Right) -->
+        <div class="profile-container">
+            <a href="/profile" class="profile-button">
+                <img src="/images/profile-icon.png" alt="Profile" class="profile-icon">
+            </a>
+        </div>
     </div>
 </header>
+
 </body>
 </html>

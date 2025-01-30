@@ -6,11 +6,46 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Property Listings</title>
+  <link rel="stylesheet" href="/css/styles.css"> <!-- Link to the CSS file -->
 </head>
+
 <body>
 <div layout:fragment="main-content">
-  <h1>This is Index Page!</h1>
+  <h1>Property Listings</h1>
+
+  <div class="content-wrapper">
+    <!-- FILTER BOX -->
+    <div class="filter-box">
+      <h3>Filter Properties</h3>
+      <form method="get" th:action="@{/property}">
+        <label>Location:</label>
+        <input type="text" name="location" class="form-control">
+
+        <label>Price Range:</label>
+        <input type="number" name="minPrice" placeholder="Min" class="form-control">
+        <input type="number" name="maxPrice" placeholder="Max" class="form-control">
+
+        <label>Type:</label>
+        <select name="type" class="form-control">
+          <option value="">All</option>
+          <option value="apartment">Apartment</option>
+          <option value="house">House</option>
+        </select>
+
+        <button type="submit" class="btn btn-primary mt-2">Apply Filters</button>
+      </form>
+    </div>
+
+    <!-- PROPERTY LISTINGS -->
+    <div class="property-listings">
+      <div th:each="property : ${properties}" class="property-card">
+        <h4 th:text="${property.name}">Property Name</h4>
+        <p th:text="${property.location}">Location</p>
+        <p>Price: <span th:text="${property.price}">$500</span></p>
+      </div>
+    </div>
+  </div>
 </div>
 </body>
 </html>
