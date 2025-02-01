@@ -1,6 +1,4 @@
-/*
- * Globals
- */
+/* Globals */
 
 /* Links */
 a,
@@ -20,15 +18,12 @@ a:hover {
     border: .05rem solid #fff;
 }
 
-/*
- * Base structure
- */
-
+/* Base structure */
 html, body {
-    height: 100%;
-    background-color: #ffffff;
-    display: flex;
-    flex-direction: column; /* Stack header, main, footer vertically */
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* Prevents horizontal scrolling */
 }
 
 body {
@@ -42,12 +37,11 @@ body {
     max-width: 100%; /* Removes unnecessary width restriction */
 }
 
-/*
- * Header
- */
+/* Header */
 .masthead {
     height: 7%;
     width: 100%;
+    margin-left: -50px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -56,15 +50,19 @@ body {
     padding-right: 50px;
 }
 
-/* Header Container */
+/* Fix header width and remove overflow */
 .header-container {
-    margin-left: -10px;
+    width: 100%; /* Use 100% instead of 100vw to avoid horizontal scrolling */
+    height: 70px;
     display: flex;
     align-items: center;
-    width: 100%;
-    background: linear-gradient(90deg, #1a73e8, #0047ab); /* Smooth blue gradient */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    background: linear-gradient(90deg, #1a73e8, #0047ab);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 0 30px;
+    position: relative;
+    overflow: hidden; /* Prevents any unwanted overflow */
 }
+
 
 /* Rent.io Branding */
 .masthead-brand {
@@ -73,7 +71,6 @@ body {
     color: white;
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2); /* Soft text shadow */
     margin-right: 50px;
-    margin-left: 30px;
     transition: transform 0.2s ease-in-out;
 }
 
@@ -83,7 +80,9 @@ body {
 
 /* Navigation */
 .nav-masthead {
+    flex-grow: 1;
     display: flex;
+    justify-content: center;
     gap: 20px;
     align-items: center;
 }
@@ -171,9 +170,20 @@ body {
     width: 100%;
 }
 
+.find-the-place-you-desire {
+    margin-top: 50px;
+    margin-left: 50px;
+    margin-bottom: 30px;
+    color: #1a73e8;
+}
+
 /* Filter Box */
 .filter-box {
+    min-width: 250px;
+    max-width: 300px;
     max-height: 500px;
+    margin-left: 20px;
+    margin-top: 20px;
     width: 30%;
     background: #f8f9fa;
     padding: 20px;
@@ -232,25 +242,27 @@ body {
 
 /* Property Listings - Grid Layout */
 .property-listings {
+    margin-right: 30px;
+    margin-left: 30px;
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Dynamic grid */
     gap: 15px;
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: 1400px;
     padding: 20px 0;
 }
 
 /* Property Card */
 .property-card {
     background: #fff;
+    min-width: 200px;
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 1px solid #e0e0e0;
     text-align: center;
-    max-height: 250px; /* Set a max height */
+    height: 350px; /* Set a max height */
     display: flex;
     flex-direction: column;
     justify-content: space-between; /* Distributes content evenly */
@@ -294,25 +306,25 @@ body {
 /* Responsive Grid */
 @media (min-width: 1025px) {
     .property-listings {
-        grid-template-columns: repeat(4, 1fr); /* Max 4 per row */
+        grid-template-columns: repeat(6, 1fr); /* Max 4 per row */
     }
 }
 
 @media (max-width: 1024px) {
     .property-listings {
-        grid-template-columns: repeat(3, 1fr); /* 3 per row */
+        grid-template-columns: repeat(5, 1fr); /* 3 per row */
     }
 }
 
 @media (max-width: 768px) {
     .property-listings {
-        grid-template-columns: repeat(2, 1fr); /* 2 per row */
+        grid-template-columns: repeat(4, 1fr); /* 2 per row */
     }
 }
 
 @media (max-width: 480px) {
     .property-listings {
-        grid-template-columns: repeat(1, 1fr); /* 1 per row */
+        grid-template-columns: repeat(3, 1fr); /* 1 per row */
     }
 }
 
