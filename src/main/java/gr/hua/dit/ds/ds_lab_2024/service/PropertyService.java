@@ -9,6 +9,7 @@ import gr.hua.dit.ds.ds_lab_2024.repositories.PropertyRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
+import gr.hua.dit.ds.ds_lab_2024.dao.PropertyDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +22,15 @@ public class PropertyService {
     private final ApplicationRepository applicationRepository;
     private PropertyRepository propertyRepository;
     private OwnerRepository ownerRepository;
+    private final PropertyDAO propertyDao;
 
-    public PropertyService(PropertyRepository propertyRepository, OwnerRepository ownerRepository, StandardServletMultipartResolver standardServletMultipartResolver, ApplicationRepository applicationRepository){
+
+    public PropertyService(PropertyRepository propertyRepository, OwnerRepository ownerRepository, StandardServletMultipartResolver standardServletMultipartResolver, ApplicationRepository applicationRepository, PropertyDAO propertyDao){
         this.ownerRepository = ownerRepository;
         this.propertyRepository = propertyRepository;
         this.standardServletMultipartResolver = standardServletMultipartResolver;
         this.applicationRepository = applicationRepository;
+        this.propertyDao = propertyDao;
     }
 
     @Transactional
@@ -76,6 +80,10 @@ public class PropertyService {
         Property property = propertyRepository.findById(propertyId).get();
         property.setActiveApplication(null);
         propertyRepository.save(property);
+    }
+
+    public List<Property> filterProperties(String city, Integer minPrice, Integer maxPrice, String type) {
+        return propertyDao.findByFilters(city, minPrice, maxPrice, type);
     }
 
 

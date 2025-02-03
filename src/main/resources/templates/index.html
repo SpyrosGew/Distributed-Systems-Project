@@ -18,24 +18,47 @@
     <!-- FILTER BOX -->
     <div class="filter-box">
       <h3>Filter Properties</h3>
-      <form method="get" th:action="@{/property}">
+      <form id="filterForm" method="get" th:action="@{/property/filteredproperties}">
         <label>Location:</label>
-        <input type="text" name="location" class="form-control">
+        <input type="text" name="city" class="form-control">
 
         <label>Price Range:</label>
-        <input type="number" name="minPrice" placeholder="Min" class="form-control">
-        <input type="number" name="maxPrice" placeholder="Max" class="form-control">
+        <input type="number" name="minPrice" placeholder="Min"  min="0" class="form-control">
+        <input type="number" name="maxPrice" placeholder="Max" min="0" class="form-control">
 
         <label>Type:</label>
         <select name="type" class="form-control">
-          <option value="">All</option>
+          <option value=" ">All</option>
           <option value="apartment">Apartment</option>
           <option value="house">House</option>
         </select>
 
         <button type="submit" class="btn btn-primary mt-2">Apply Filters</button>
+        <p id="errorMessage" style="color: red; display: none;">Please fill in at least one filter.</p>
       </form>
     </div>
+
+
+  <script>
+    document.getElementById('filterForm').addEventListener('submit', function (event) {
+      // Get all input fields
+      const city = document.querySelector('input[name="city"]').value.trim();
+      const minPrice = document.querySelector('input[name="minPrice"]').value.trim();
+      const maxPrice = document.querySelector('input[name="maxPrice"]').value.trim();
+      const type = document.querySelector('select[name="type"]').value;
+
+      // Check if all fields are empty
+      if (!city && !minPrice && !maxPrice && !type) {
+        // Prevent form submission
+        event.preventDefault();
+        // Show error message
+        document.getElementById('errorMessage').style.display = 'block';
+      } else {
+        // Hide error message if it was previously shown
+        document.getElementById('errorMessage').style.display = 'none';
+      }
+    });
+  </script>
 
     <!-- PROPERTY LISTINGS -->
     <div class="property-listings">
