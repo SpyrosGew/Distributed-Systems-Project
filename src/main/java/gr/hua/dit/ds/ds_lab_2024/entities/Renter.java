@@ -22,6 +22,8 @@ public class Renter extends User{
         this.applications = applications;
     }
 
+    @ManyToMany(mappedBy = "renters", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Property> rentedProperties;
 
     public Renter(String name, String email, String password){
         super(name, email,password,Status.IN_PROCESS);
@@ -40,3 +42,6 @@ public class Renter extends User{
                 '}';
     }
 }
+
+
+

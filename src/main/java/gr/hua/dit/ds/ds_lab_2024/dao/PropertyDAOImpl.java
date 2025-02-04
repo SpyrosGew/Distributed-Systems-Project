@@ -55,10 +55,8 @@ public class PropertyDAOImpl implements PropertyDAO {
         if (type != null && !type.trim().isEmpty()) {
             queryBuilder.append(" AND p.type = :type");
         }
-
         // Create the query
         TypedQuery<Property> query = entityManager.createQuery(queryBuilder.toString(), Property.class);
-
         // Set parameters
         if (city != null && !city.trim().isEmpty()) {
             query.setParameter("city", city);
@@ -74,6 +72,14 @@ public class PropertyDAOImpl implements PropertyDAO {
         }
 
         // Execute the query and return the results
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Property> findPropertiesByOwner(Owner owner) {
+        String jpql = "SELECT p FROM Property p WHERE p.owner = :owner";
+        TypedQuery<Property> query = entityManager.createQuery(jpql, Property.class);
+        query.setParameter("owner", owner);
         return query.getResultList();
     }
 

@@ -14,30 +14,6 @@
 <div layout:fragment="main-content">
   <h2 class="find-the-place-you-desire">Find the place you desire</h2>
 
-<!--  <div class="content-wrapper">-->
-<!--    &lt;!&ndash; FILTER BOX &ndash;&gt;-->
-<!--    <div class="filter-box">-->
-<!--      <h3>Filter Properties</h3>-->
-<!--      <form method="get" th:action="@{/property/filteredproperties}">-->
-<!--        <label>Location:</label>-->
-<!--        <input type="text" name="city" class="form-control">-->
-
-<!--        <label>Price Range:</label>-->
-<!--        <input type="number" name="minPrice" placeholder="Min" class="form-control">-->
-<!--        <input type="number" name="maxPrice" placeholder="Max" class="form-control">-->
-
-<!--        <label>Type:</label>-->
-<!--        <select name="type" class="form-control">-->
-<!--          <option value="">All</option>-->
-<!--          <option value="apartment">Apartment</option>-->
-<!--          <option value="house">House</option>-->
-<!--        </select>-->
-
-<!--        <button type="submit" class="btn btn-primary mt-2" disabled>Apply Filters</button>-->
-<!--      </form>-->
-<!--    </div>-->
-
-
   <div class="content-wrapper">
     <!-- FILTER BOX -->
     <div class="filter-box">
@@ -48,7 +24,7 @@
 
         <label>Price Range:</label>
         <input type="number" name="minPrice" placeholder="Min"  min="0" class="form-control">
-        <input type="number" name="maxPrice" placeholder="Max" class="form-control">
+        <input type="number" name="maxPrice" placeholder="Max" min="0" class="form-control">
 
         <label>Type:</label>
         <select name="type" class="form-control">

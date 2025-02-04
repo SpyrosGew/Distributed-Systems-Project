@@ -1,9 +1,6 @@
 package gr.hua.dit.ds.ds_lab_2024.controllers;
 
-import gr.hua.dit.ds.ds_lab_2024.entities.Owner;
-import gr.hua.dit.ds.ds_lab_2024.entities.Property;
-import gr.hua.dit.ds.ds_lab_2024.entities.Status;
-import gr.hua.dit.ds.ds_lab_2024.entities.User;
+import gr.hua.dit.ds.ds_lab_2024.entities.*;
 import gr.hua.dit.ds.ds_lab_2024.repositories.PropertyRepository;
 import gr.hua.dit.ds.ds_lab_2024.repositories.UserRepository;
 import gr.hua.dit.ds.ds_lab_2024.service.PropertyService;
@@ -32,11 +29,35 @@ public class PropertyController {
 
     @Operation(summary = "Show properties", description = "Display properties")
     @RequestMapping
-    public String showProperties(Model model) {
-        model.addAttribute("properties", propertyService.getProperties());
+    public String showUsersProperties(Model model, Authentication authentication) {
+        // Get the username from the authenticated user
+        String username = authentication.getName(); // Should now return the username
+
+        // Fetch the user from the database
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalStateException("User not found"));
+
+        boolean isOwner = currentUser.getRoles().stream()
+                .map(Role::getName)
+                .anyMatch(role -> role.equals("ROLE_OWNER"));
+
+        boolean isRenter = currentUser.getRoles().stream()
+                .map(Role::getName)
+                .anyMatch(role -> role.equals("ROLE_RENTER"));
+
+        List<Property> properties = propertyService.getProperties();
+        if(isOwner) {
+            properties = propertyService.getPropertiesByOwner((Owner) currentUser);
+        } else if(isRenter) {
+            properties = propertyService.getPropertiesByRenter((Renter) currentUser);
+        }
+
+        System.out.println(properties);
+        model.addAttribute("properties", properties);
         return "property/properties";
     }
 
+    @Operation(summary = "Get filtered properties", description = "Display the properties based on the filters")
     @GetMapping("/filteredproperties")
     public String filteredProperties(Model model, @RequestParam(required = false) String city,
                                      @RequestParam(required = false) Integer minPrice,
