@@ -1,8 +1,6 @@
 package gr.hua.dit.ds.ds_lab_2024.service;
 
-import gr.hua.dit.ds.ds_lab_2024.entities.Application;
-import gr.hua.dit.ds.ds_lab_2024.entities.Property;
-import gr.hua.dit.ds.ds_lab_2024.entities.Renter;
+import gr.hua.dit.ds.ds_lab_2024.entities.*;
 import gr.hua.dit.ds.ds_lab_2024.repositories.ApplicationRepository;
 import gr.hua.dit.ds.ds_lab_2024.repositories.OwnerRepository;
 import gr.hua.dit.ds.ds_lab_2024.repositories.PropertyRepository;
@@ -42,7 +40,16 @@ public class PropertyService {
     public void saveProperty(Property property){
         propertyRepository.save(property);
     }
+    @Transactional
+    public List<Property> getPropertiesByOwner(Owner owner) {
+        return propertyRepository.findPropertiesByOwner(owner);
 
+    }
+
+    @Transactional
+    public List<Property> getPropertiesByRenter(Renter renter) {
+        return propertyRepository.findPropertiesByRenter(renter);
+    }
     @Transactional
     public Property getProperty(Integer propertyId){
         return propertyRepository.findById(propertyId).get();

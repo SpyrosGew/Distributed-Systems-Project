@@ -27,6 +27,15 @@ public class Property {
     @JoinColumn(name = "owner_id") // This creates the foreign key column "owner_id" in the Property table
     private Owner owner;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "property_renter",
+            joinColumns = @JoinColumn(name = "property_id"),
+            inverseJoinColumns = @JoinColumn(name = "renter_id")
+    )
+    private List<Renter> renters;  // Renters associated with the property
+
+
     @Column(name = "status")
     private Status status = Status.IN_PROCESS;
 
