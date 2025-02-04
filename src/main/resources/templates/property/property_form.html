@@ -24,6 +24,17 @@
             <label for="squareMeters">Square Meters</label>
             <input type="number" class="form-control" th:field="*{squareMeters}" id="squareMeters" placeholder="Enter property size" required />
         </div>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="range" class="form-control" th:field="*{price}" id="price" placeholder="Enter property price" />
+        </div>
+        <div class="form-group">
+            <label for="type">Type</label>
+            <select class="form-control" id="type" th:field="*{type}">
+                <option value="Apartment">Apartment</option>
+                <option value="House">House</option>
+            </select>
+        </div>
         <input type="submit" class="btn btn-primary" value="Add Property" />
     </form>
 </div>

@@ -36,14 +36,38 @@ public class Property {
 
     private transient Renter activeRenter;
 
+    @Column(name = "price")
+    private Integer price;
+
+    @Column(name = "type")
+    private String type; // Example values: "apartment", "house"
+
     public Property() {
     }
 
-    public Property(String name, int squareMeters, Owner owner, String city) {
+    public Property(String name, int squareMeters, Owner owner, String city, int price, String type) {
         this.address = name;
         this.squareMeters = squareMeters;
         this.owner = owner;
         this.city = city;
+        this.price = price;
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public String getCity() {

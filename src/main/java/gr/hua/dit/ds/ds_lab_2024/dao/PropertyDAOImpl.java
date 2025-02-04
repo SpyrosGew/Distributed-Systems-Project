@@ -38,5 +38,44 @@ public class PropertyDAOImpl implements PropertyDAO {
         return query.getResultList();
     }
 
+    @Override
+    public List<Property> findByFilters(String city, Integer minPrice, Integer maxPrice, String type) {
+        // Build the query dynamically based on the provided filters
+        StringBuilder queryBuilder = new StringBuilder("SELECT p FROM Property p WHERE 1=1");
+
+        if (city != null && !city.trim().isEmpty()) {
+            queryBuilder.append(" AND LOWER(TRIM(p.city)) LIKE LOWER(CONCAT('%', TRIM(:city), '%'))");
+        }
+        if (minPrice != null) {
+            queryBuilder.append(" AND p.price >= :minPrice");
+        }
+        if (maxPrice != null) {
+            queryBuilder.append(" AND p.price <= :maxPrice");
+        }
+        if (type != null && !type.trim().isEmpty()) {
+            queryBuilder.append(" AND p.type = :type");
+        }
+
+        // Create the query
+        TypedQuery<Property> query = entityManager.createQuery(queryBuilder.toString(), Property.class);
+
+        // Set parameters
+        if (city != null && !city.trim().isEmpty()) {
+            query.setParameter("city", city);
+        }
+        if (minPrice != null) {
+            query.setParameter("minPrice", minPrice);
+        }
+        if (maxPrice != null) {
+            query.setParameter("maxPrice", maxPrice);
+        }
+        if (type != null && !type.trim().isEmpty()) {
+            query.setParameter("type", type);
+        }
+
+        // Execute the query and return the results
+        return query.getResultList();
+    }
+
 
 }

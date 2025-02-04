@@ -37,6 +37,21 @@ public class PropertyController {
         return "property/properties";
     }
 
+    @GetMapping("/filteredproperties")
+    public String filteredProperties(Model model, @RequestParam(required = false) String city,
+                                     @RequestParam(required = false) Integer minPrice,
+                                     @RequestParam(required = false) Integer maxPrice,
+                                     @RequestParam(required = false) String type)
+    {
+        System.out.println("City: " + city + ", MinPrice: " + minPrice + ", MaxPrice: " + maxPrice + ", Type: " + type);
+
+        List<Property> filteredProperties = propertyService.filterProperties(city, minPrice, maxPrice, type);
+        System.out.println(filteredProperties);
+
+        model.addAttribute("properties", filteredProperties);
+        return "index";
+    }
+
     @Operation(summary = "Show property", description = "Display property")
     @GetMapping("property/{property_id}")
     public String showProperty(Model model, @PathVariable("property_id") int property_id) {
