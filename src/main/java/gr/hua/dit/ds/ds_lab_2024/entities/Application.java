@@ -18,9 +18,6 @@ public class Application {
     @Column(name = "start_date")
     private LocalDate startDate;
 
-    @Column(name = "duration_in_months")
-    private int durationInMonths;
-
     @Column(name = "price")
     private double price;
 
@@ -42,9 +39,8 @@ public class Application {
     @JoinColumn(name = "owner_id") // This creates the foreign key column "owner_id" in the Property table
     private Owner owner;
 
-    public Application(LocalDate startDate, int durationInMonths, double price, Property property, Owner owner, Renter renter) {
+    public Application(LocalDate startDate, double price, Property property, Owner owner, Renter renter) {
         this.startDate = startDate;
-        this.durationInMonths = durationInMonths;
         this.price = price;
         this.property = property;
         this.owner = owner;
@@ -60,14 +56,6 @@ public class Application {
 
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
-    }
-
-    public int getDurationInMonths() {
-        return durationInMonths;
-    }
-
-    public void setDurationInMonths(int durationInMonths) {
-        this.durationInMonths = durationInMonths;
     }
 
     public double getPrice() {
@@ -123,7 +111,6 @@ public class Application {
         return "Application{" +
                 "id=" + id +
                 ", startDate=" + startDate +
-                ", durationInMonths=" + durationInMonths +
                 ", price=" + price +
                 ", status=" + status +
                 ", property=" + property +

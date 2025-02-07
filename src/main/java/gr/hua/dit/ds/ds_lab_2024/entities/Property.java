@@ -20,7 +20,7 @@ public class Property {
     private int squareMeters;   //how many square meters the property is
 
     @Column(name = "is_available")
-    private transient boolean isAvailable;   //is the property currently available (if activeApplication == NULL then this is true)
+    private transient boolean isAvailable = true;   //is the property currently available (if activeApplication == NULL then this is true)
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
