@@ -2,6 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       layout:decorate="~{page_layout/layout}">
 
 <head>
@@ -66,6 +67,12 @@
         <h4 th:text="${property.getAddress()}">Property Name</h4>
         <p th:text="${property.getCity()}">Location</p>
         <p>Price: <span th:text="${property.getStatus()}">$500</span></p>
+        <!-- Corrected Apply button -->
+        <a sec:authorize="hasRole('RENTER')"
+           th:href="@{/property/apply/{id}(id=${property.id})}"
+           class="btn btn-primary">
+          Apply
+        </a>
       </div>
     </div>
   </div>

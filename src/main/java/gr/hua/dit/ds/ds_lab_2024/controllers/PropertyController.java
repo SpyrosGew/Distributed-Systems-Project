@@ -6,6 +6,7 @@ import gr.hua.dit.ds.ds_lab_2024.repositories.UserRepository;
 import gr.hua.dit.ds.ds_lab_2024.service.PropertyService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -59,11 +60,7 @@ public class PropertyController {
 
     @Operation(summary = "Get filtered properties", description = "Display the properties based on the filters")
     @GetMapping("/filteredproperties")
-    public String filteredProperties(Model model, @RequestParam(required = false) String city,
-                                     @RequestParam(required = false) Integer minPrice,
-                                     @RequestParam(required = false) Integer maxPrice,
-                                     @RequestParam(required = false) String type)
-    {
+    public String filteredProperties(Model model, @RequestParam(required = false) String city, @RequestParam(required = false) Integer minPrice, @RequestParam(required = false) Integer maxPrice, @RequestParam(required = false) String type) {
         System.out.println("City: " + city + ", MinPrice: " + minPrice + ", MaxPrice: " + maxPrice + ", Type: " + type);
 
         List<Property> filteredProperties = propertyService.filterProperties(city, minPrice, maxPrice, type);
@@ -121,6 +118,24 @@ public class PropertyController {
         model.addAttribute("properties", propertyService.getProperties());
         model.addAttribute("successMessage", "Property added successfully!");
         return "property/properties";
+    }
+
+    @Operation(summary = "Renter apply for property", description = "Renter can i apply for to rent the property")
+    @GetMapping("/apply/{id}")
+    public String applyForProperty(@PathVariable("id") int propertyId, Authentication authentication, Model model) {
+        String username = authentication.getName();
+
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalStateException("User not found"));
+        boolean success = propertyService.applyForProperty(propertyId, (Renter) currentUser);
+        if (success) {
+            model.addAttribute("success", "Property approved successfully!");
+        } else {
+            model.addAttribute("error", "Property could not be approved!");
+        }
+        List<Property> properties = propertyRepository.findAll();
+        model.addAttribute("properties", properties);
+        return "index";
     }
 
 }
