@@ -12,38 +12,41 @@
 </head>
 <body>
 <div layout:fragment="main-content">
-    <h2>My Applications</h2>
+    <div class="my-applications-table">
+        <h2>My Applications</h2>
 
-    <div th:if="${not #lists.isEmpty(ownersApplications)}">
-        <table class="table table-striped table-hover">
-            <thead class="thead-dark">
-            <tr>
-                <th>Renter Id</th>
-                <th>Property</th>
-                <th>Price</th>
-                <th>Available</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="app : ${ownersApplications}">
-                <td th:if="${app.renter != null}" th:text="${app.renter.id}"></td>
-                <td th:if="${app.property != null}" th:text="${app.property.address}"></td>
-                <td th:if="${app.property != null}" th:text="${app.property.price}"></td>
-                <td th:if="${app.property != null}" th:text="${app.property.isAvailable} ? 'Yes' : 'No'"></td>
-                <td>
-                    <!-- View Button -->
-                    <a th:href="@{/applications/view/{id}(id=${app.id})}" class="btn btn-info">View</a>
-                    <!-- Approve Button -->
-                    <form th:action="@{/applications/approve/{id}(id=${app.id})}" method="post" style="display:inline;">
-                        <button type="submit" class="btn btn-success">Approve</button>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div th:if="${#lists.isEmpty(ownersApplications)}">
-        <p class="text-danger">No Applications found!</p>
+        <div th:if="${not #lists.isEmpty(ownersApplications)}">
+            <table class="table table-striped table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Renter Id</th>
+                    <th>Property</th>
+                    <th>Price</th>
+                    <th>Available</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="app : ${ownersApplications}">
+                    <td th:if="${app.renter != null}" th:text="${app.renter.id}"></td>
+                    <td th:if="${app.property != null}" th:text="${app.property.address}"></td>
+                    <td th:if="${app.property != null}" th:text="${app.property.price}"></td>
+                    <td th:if="${app.property != null}" th:text="${app.property.isAvailable} ? 'Yes' : 'No'"></td>
+                    <td>
+                        <!-- View Button -->
+                        <a th:href="@{/applications/view/{id}(id=${app.id})}" class="btn btn-info action-btn">View</a>
+                        <!-- Approve Button -->
+                        <form th:action="@{/applications/approve/{id}(id=${app.id})}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-success action-btn">Approve</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:if="${#lists.isEmpty(ownersApplications)}">
+            <p class="text-danger no-applications">No Applications found!</p>
+        </div>
     </div>
 </div>
 </body>
