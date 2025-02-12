@@ -115,40 +115,6 @@ body {
     display: inline;
 }
 
-/* Profile Container (Right Side) */
-.profile-container {
-    margin-left: auto; /* Stays at the far right */
-}
-
-/* Profile Button */
-.profile-button {
-    margin-right: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 15px;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.15);
-    transition: background 0.3s ease-in-out;
-}
-
-.profile-button:hover {
-    background: rgba(255, 255, 255, 0.25);
-}
-
-/* Profile Icon */
-.profile-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    border: 2px solid white;
-    transition: transform 0.3s ease-in-out;
-}
-
-.profile-icon:hover {
-    transform: scale(1.1); /* Slight zoom effect on hover */
-}
-
 /* Footer */
 .mastfoot {
     width: 100%;
@@ -493,4 +459,211 @@ body {
     color: #155724;
     margin-top: 10px;
     text-align: center;
+}
+
+/* Styles for My Properties Table */
+.my-properties-table {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Table Styling */
+.my-properties-table .table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Header */
+.my-properties-table .table thead {
+    background-color: #007bff;
+    color: white;
+}
+
+.my-properties-table .table th {
+    padding-left: 70px;
+    padding-top :15px;
+    padding-bottom: 15px;
+    text-align: left;
+    font-size: 16px;
+}
+
+/* Table Rows */
+.my-properties-table .table tbody tr {
+    border-bottom: 1px solid #ddd;
+    transition: background 0.3s ease;
+}
+
+.my-properties-table .table tbody tr:hover {
+    background: rgba(0, 123, 255, 0.1);
+}
+
+/* Table Cells */
+.my-properties-table .table td {
+    padding: 12px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Empty Properties Message */
+.my-properties-table div:empty {
+    padding: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #555;
+}
+
+/* Add Property Button */
+.my-properties-table .add-property-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 25px;
+    font-size: 16px;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.my-properties-table .add-property-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Styles for My Applications Table */
+.my-applications-table {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Table Styling */
+.my-applications-table .table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Header */
+.my-applications-table .table thead {
+    background-color: #343a40;
+    color: white;
+}
+
+.my-applications-table .table th {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 60px;
+    text-align: left;
+    font-size: 16px;
+}
+
+/* Table Rows */
+.my-applications-table .table tbody tr {
+    border-bottom: 1px solid #ddd;
+    transition: background 0.3s ease;
+}
+
+.my-applications-table .table tbody tr:hover {
+    background: rgba(52, 58, 64, 0.1);
+}
+
+/* Table Cells */
+.my-applications-table .table td {
+    padding: 12px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Empty Applications Message */
+.my-applications-table .no-applications {
+    font-size: 18px;
+    font-weight: bold;
+    color: #dc3545;
+    margin-top: 20px;
+}
+
+/* Buttons */
+.my-applications-table .action-btn {
+    padding: 8px 15px;
+    font-size: 14px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.my-applications-table .btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.my-applications-table .btn-info:hover {
+    background-color: #138496;
+}
+
+.my-applications-table .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.my-applications-table .btn-success:hover {
+    background-color: #218838;
+}
+
+/* Notifications Page Container */
+.notifications-container {
+    width: 80%;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Notifications List */
+.notifications-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+/* Each Notification Item */
+.notification-item {
+    background: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease;
+}
+
+/* Hover Effect on Notification */
+.notification-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+/* Empty Notifications Message */
+.no-notifications {
+    font-size: 18px;
+    font-weight: bold;
+    color: #dc3545;
+    margin-top: 20px;
 }
