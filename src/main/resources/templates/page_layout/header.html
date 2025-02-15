@@ -18,8 +18,9 @@
         <!-- Navigation Bar -->
         <nav class="nav nav-masthead">
             <a class="nav-link" href="/" data-path="/">Home</a>
-            <a class="nav-link" href="/property" data-path="/property">My Properties</a>
+            <a sec:authorize="hasAnyRole('OWNER', 'RENTER')" class="nav-link" href="/property" data-path="/property">My Properties</a>
             <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/users">Users</a>
+            <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/all_properties">All Properties</a>
             <a sec:authorize="hasRole('OWNER')" class="nav-link" href="/owner/applications">Applications</a>
             <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/applications">Approvals</a>
             <a class="nav-link" href="/notifications" data-path="/notifications">Notifications</a>

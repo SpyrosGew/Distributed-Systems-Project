@@ -70,6 +70,13 @@ public class PropertyController {
         return "index";
     }
 
+    @GetMapping("all_properties")
+    public String getAllProperties(Model model){
+        List<Property> allProperties = propertyService.getAllProperties();
+        model.addAttribute("properties", allProperties);
+        return "property/properties";
+    }
+
     @Operation(summary = "Show property", description = "Display property")
     @GetMapping("property/{property_id}")
     public String showProperty(Model model, @PathVariable("property_id") int property_id) {

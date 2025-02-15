@@ -18,23 +18,17 @@
         <!-- Navigation Bar -->
         <nav class="nav nav-masthead">
             <a class="nav-link" href="/" data-path="/">Home</a>
+            <a class="nav-link" href="/property" data-path="/property">My Properties</a>
+            <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/users">Users</a>
+            <a sec:authorize="hasRole('OWNER')" class="nav-link" href="/owner/applications">Applications</a>
+            <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/applications">Approvals</a>
             <a class="nav-link" href="/notifications" data-path="/notifications">Notifications</a>
 
-            <!-- Show all links only if userStatus is NOT "inProcess" -->
-            <span th:if="${userStatus != 'IN_PROCESS'}">
-                <a class="nav-link" href="/property" data-path="/property">My Properties</a>
-                <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/users">Users</a>
-                <a sec:authorize="hasRole('OWNER')" class="nav-link" href="/owner/applications">Applications</a>
-                <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/applications">Approvals</a>
-            </span>
-
-            <!-- Show login/register for unauthenticated users -->
             <span sec:authorize="!isAuthenticated()">
                 <a class="nav-link" href="/login">Login</a>
                 <a class="nav-link" href="/register">Register</a>
             </span>
 
-            <!-- Logout button for authenticated users -->
             <span sec:authorize="isAuthenticated()">
                 <form th:action="@{/logout}" method="post" class="logout-form">
                     <input type="submit" class="btn btn-primary" value="Sign Out"/>
