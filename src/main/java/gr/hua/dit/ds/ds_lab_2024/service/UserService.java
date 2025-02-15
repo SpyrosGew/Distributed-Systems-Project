@@ -120,6 +120,7 @@ public class UserService implements UserDetailsService {
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         renter.setRoles(roles);
+        renter.setApprovalStatus(Status.IN_PROCESS);
 
         userRepository.save(renter);  // Save the User (base class)
         renterRepository.save(renter); // Save the Renter-specific data
@@ -135,6 +136,7 @@ public class UserService implements UserDetailsService {
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         owner.setRoles(roles);
+        owner.setApprovalStatus(Status.IN_PROCESS);
 
         userRepository.save(owner);  // Save the User (base class)
         ownerRepository.save(owner); // Save the Renter-specific data

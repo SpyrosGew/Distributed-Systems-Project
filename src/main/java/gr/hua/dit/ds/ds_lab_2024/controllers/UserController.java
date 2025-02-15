@@ -63,14 +63,15 @@ public class UserController {
             Renter renter = new Renter(user.getUsername(), user.getEmail(), user.getPassword());
             userService.registerRenter(renter);
         } else if ("ROLE_ADMIN".equals(role)) {
-            User admin = new User(user.getUsername(), user.getEmail(), user.getPassword(), Status.IN_PROCESS);
+            User admin = new User(user.getUsername(), user.getEmail(), user.getPassword(), Status.APPROVED);
             userService.saveUser(admin);
         } else {
             model.addAttribute("error", "Invalid role selected!");
             return "auth/register";
         }
         String message = "Registration successful! Waiting for approval from admin...";
-        model.addAttribute("msg", message);return  "index";
+        model.addAttribute("msg", message);
+        return  "index";
     }
 
     @Operation(summary = "View all users", description = "Displays a list of all registered users. Requires admin privileges.")
