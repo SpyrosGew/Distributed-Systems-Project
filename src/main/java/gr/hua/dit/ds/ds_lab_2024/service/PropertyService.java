@@ -39,6 +39,11 @@ public class PropertyService {
 
     @Transactional
     public List<Property> getProperties(){
+        return propertyRepository.findAllNotInProcess(Status.IN_PROCESS);
+    }
+
+    @Transactional
+    public List<Property> getAllProperties(){
         return propertyRepository.findAll();
     }
 
