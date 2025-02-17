@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
+      xmlns:th="http://www.thymeleaf.org/"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       layout:decorate="~{page_layout/layout}">
@@ -9,9 +9,9 @@
     <title>Add Property</title>
 </head>
 <body>
-<div layout:fragment="main-content">
+<div layout:fragment="main-content" class="add-property-container">
     <h3>Add Your Property</h3>
-    <form th:action="@{/property/new}" method="post" th:object="${property}">
+    <form th:action="@{/property/new}" method="post" th:object="${property}" class="property-form">
         <div class="form-group">
             <label for="address">Address</label>
             <input type="text" class="form-control" th:field="*{address}" id="address" placeholder="Enter property address" required />
@@ -25,8 +25,8 @@
             <input type="number" class="form-control" th:field="*{squareMeters}" id="squareMeters" placeholder="Enter property size" required />
         </div>
         <div class="form-group">
-            <label for="price">Price</label>
-            <input type="range" class="form-control" th:field="*{price}" id="price" placeholder="Enter property price" />
+            <label for="price">Price (USD)</label>
+            <input type="number" class="form-control" th:field="*{price}" id="price" placeholder="Enter property price" required />
         </div>
         <div class="form-group">
             <label for="type">Type</label>
@@ -35,7 +35,7 @@
                 <option value="House">House</option>
             </select>
         </div>
-        <input type="submit" class="btn btn-primary" value="Add Property" />
+        <input type="submit" class="btn btn-primary submit-btn" value="Add Property" />
     </form>
 </div>
 </body>

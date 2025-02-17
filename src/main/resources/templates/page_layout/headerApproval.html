@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Header</title>
+    <link rel="stylesheet" th:href="@{/css/cover.css}">
+</head>
+<body>
+
+<header class="masthead mb-auto" th:fragment="headerApproval">
+    <div class="header-container">
+        <!-- Rent.io Branding -->
+        <h3 class="masthead-brand">Rent.io</h3>
+
+        <!-- Navigation Bar -->
+
+        <nav class="nav nav-masthead">
+            <span sec:authorize="!isAuthenticated()">
+                <a class="nav-link" href="/login">Login</a>
+                <a class="nav-link" href="/register">Register</a>
+            </span>
+
+            <span sec:authorize="isAuthenticated()">
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" class="btn" value="Sign Out"/>
+                </form>
+            </span>
+        </nav>
+    </div>
+</header>
+
+</body>
+</html>

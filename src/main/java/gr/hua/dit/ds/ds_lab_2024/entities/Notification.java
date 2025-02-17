@@ -82,9 +82,9 @@ public class Notification {
 
         } else if(getTask() == NotificationTask.VERIFY_NEW_PROPERTY_FROM_ADMIN) {
             if (getStatus() == Status.ACCEPTED){
-                return "To the most dearest owner " + receiver.getUsername() + "your new property with id " + getPropertyId() + "has been accepted";
+                return "To the most dearest owner " + receiver.getUsername() + " your new property with id " + getPropertyId() + "has been accepted";
             }else if(getStatus() == Status.DECLINED){
-                return "To the most dearest owner " + receiver.getUsername() + "your new property with id " + getPropertyId() + "has been declined";
+                return "To the most dearest owner " + receiver.getUsername() + " your new property with id " + getPropertyId() + "has been declined";
             }
         }
         return "something went wrong";
