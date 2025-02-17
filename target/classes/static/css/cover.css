@@ -667,3 +667,53 @@ body {
     color: #dc3545;
     margin-top: 20px;
 }
+/* Container for Add Property Form */
+.add-property-container {
+    width: 50%;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 25px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Styling */
+.property-form .form-group {
+    margin-bottom: 15px;
+}
+
+/* Input & Select Fields */
+.property-form input,
+.property-form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border 0.3s ease;
+}
+
+/* Focus Effect */
+.property-form input:focus,
+.property-form select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Submit Button */
+.submit-btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background: #007bff;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: #0056b3;
+}
+
