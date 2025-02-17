@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Waiting for Approval">
+
+  <title>Waiting for Approval</title>
+
+  <!-- Custom styles -->
+  <link rel="stylesheet" th:href="@{/css/cover.css}">
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+<!-- Header -->
+<header class="masthead mb-auto" th:replace="~{page_layout/header :: header}"></header>
+
+<!-- Main Content -->
+<main role="main" class="flex-grow-1 d-flex align-items-center justify-content-center text-center" layout:fragment="main-content">
+  <div>
+    <h2>Your account is awaiting approval</h2>
+    <p>An administrator will review your request shortly. Please check back later.</p>
+
+    <div class="header-container">
+      <a href="/waiting-approval" class="btn btn-primary">Home</a>
+      <a href="/notifications" class="btn btn-info">Notifications</a>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="mastfoot mt-auto" th:replace="~{page_layout/footer :: footer}"></footer>
+
+</body>
+</html>

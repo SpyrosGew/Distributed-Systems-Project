@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
@@ -16,13 +16,13 @@
         <h3 class="masthead-brand">Rent.io</h3>
 
         <!-- Navigation Bar -->
+
         <nav class="nav nav-masthead">
             <a class="nav-link" href="/" data-path="/">Home</a>
             <a sec:authorize="hasAnyRole('OWNER', 'RENTER')" class="nav-link" href="/property" data-path="/property">My Properties</a>
             <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/users">Users</a>
-            <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/all_properties">All Properties</a>
-            <a sec:authorize="hasRole('OWNER')" class="nav-link" href="/owner/applications">Applications</a>
-            <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/applications">Approvals</a>
+            <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/property/properties">All Properties</a>
+            <a sec:authorize="hasRole('OWNER')" class="nav-link" href="/application/applications">Applications</a>
             <a class="nav-link" href="/notifications" data-path="/notifications">Notifications</a>
 
             <span sec:authorize="!isAuthenticated()">
@@ -31,8 +31,8 @@
             </span>
 
             <span sec:authorize="isAuthenticated()">
-                <form th:action="@{/logout}" method="post" class="logout-form">
-                    <input type="submit" class="btn btn-primary" value="Sign Out"/>
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" class="btn" value="Sign Out"/>
                 </form>
             </span>
         </nav>

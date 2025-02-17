@@ -11,6 +11,9 @@
 <body>
 <div layout:fragment="main-content">
     <div class ="sign-in">
+        <div th:if="${message}">
+            <p th:text="${message}"></p>
+        </div>
         <div th:if="${param.error}">
             Invalid username and password.
         </div>

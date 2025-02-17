@@ -1,8 +1,10 @@
 package gr.hua.dit.ds.ds_lab_2024.controllers;
 
 import gr.hua.dit.ds.ds_lab_2024.entities.*;
+import gr.hua.dit.ds.ds_lab_2024.repositories.NotificationRepository;
 import gr.hua.dit.ds.ds_lab_2024.repositories.RoleRepository;
 import gr.hua.dit.ds.ds_lab_2024.repositories.UserRepository;
+import gr.hua.dit.ds.ds_lab_2024.service.NotificationService;
 import gr.hua.dit.ds.ds_lab_2024.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.security.access.annotation.Secured;
@@ -29,11 +31,14 @@ public class UserController {
 
     private UserRepository userRepository;
 
-    public UserController(UserService userService, RoleRepository roleRepository, UserRepository userRepository) {
+    private NotificationRepository notificationRepository;
+
+    public UserController(UserService userService, RoleRepository roleRepository, UserRepository userRepository, NotificationRepository notificationRepository)
+    {
         this.userService = userService;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
-
+        this.notificationRepository = notificationRepository;
     }
 
     @Operation(summary = "Register a new user", description = "Registers a user with the selected role")
@@ -54,6 +59,7 @@ public class UserController {
                model.addAttribute("error", "User with the same username or email already exists.");
                model.addAttribute("user", user);
                model.addAttribute("roles", roleRepository.findAll());
+
                return "auth/register";
         }
         // Determine role and create specific user type
@@ -69,9 +75,8 @@ public class UserController {
             model.addAttribute("error", "Invalid role selected!");
             return "auth/register";
         }
-        String message = "Registration successful! Waiting for approval from admin...";
-        model.addAttribute("msg", message);
-        return  "index";
+        model.addAttribute("message", "Account created successfully! Waiting for approval.");
+        return  "/auth/login";
     }
 
     @Operation(summary = "View all users", description = "Displays a list of all registered users. Requires admin privileges.")
@@ -98,8 +103,11 @@ public class UserController {
         User the_user = (User) userService.getUser(user_id);
         the_user.setEmail(user.getEmail());
         the_user.setUsername(user.getUsername());
+        the_user.setRoles(user.getRoles());
         userService.updateUser(the_user);
+
         model.addAttribute("users", userService.getUsers());
+        model.addAttribute("roles", roleRepository.findAll());
         return "auth/users";
 
 
@@ -107,7 +115,7 @@ public class UserController {
 
     @Operation(summary = "Approve a user", description = "Updates the approval status of a user with the specified ID to 'APPROVED'.")
     @Secured("ROLE_ADMIN")
-    @PostMapping("/users/{id}")
+    @PostMapping("/user/approve/{id}")
     public String approveUser(@PathVariable int id, Model model) {
         // Fetch the user by ID
         User user = userRepository.findById(id)
@@ -119,8 +127,9 @@ public class UserController {
         model.addAttribute("successMessage", "User approved successfully!");
 
         List<User> pendingUsers = userRepository.findAll();
-        model.addAttribute("pendingUsers", pendingUsers);
-        return "admin/userApprovals";
+        model.addAttribute("users", pendingUsers);
+        model.addAttribute("roles", roleRepository.findAll());
+        return "auth/users";
     }
 
     @Operation(summary = "Add a role to a user", description = "Assigns a specific role to a user by their user ID and role ID. The updated user information is then displayed.")
@@ -151,5 +160,26 @@ public class UserController {
         return "auth/users";
 
     }
+
+    @Operation(summary = "Delete a user", description = "Deletes the user with the specified ID.")
+    @Secured("ROLE_ADMIN")
+    @PostMapping("/user/delete/{id}")
+    public String deleteUser(@PathVariable int id, Model model) {
+        // Check if user exists
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("User not found"));
+
+        // Delete the user
+        userRepository.delete(user);
+
+        model.addAttribute("successMessage", "User deleted successfully!");
+
+        // Refresh the list of users
+        List<User> users = userRepository.findAll();
+        model.addAttribute("users", users);
+        model.addAttribute("roles", roleRepository.findAll());
+        return "auth/users";
+    }
+
 }
  

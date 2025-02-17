@@ -2,6 +2,7 @@ package gr.hua.dit.ds.ds_lab_2024.config;
 
 
 import gr.hua.dit.ds.ds_lab_2024.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -21,6 +22,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
     private UserService userService;
+    @Autowired
+    private CustomLoginSuccessHandler loginSuccessHandler;
 
     private UserDetailsService userDetailsService;
 
@@ -36,9 +39,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/waiting-approval").authenticated() // Allow only authenticated users
                         .requestMatchers("/", "/home", "/register", "/saveUser", "/images/**", "/js/**", "/css/**").permitAll()
                         .requestMatchers("/property/new").hasRole("OWNER")
-                        .requestMatchers("/teacher/**").hasRole("ADMIN")
                         .requestMatchers("/users/**").hasRole("ADMIN")
 
                         .anyRequest().authenticated()
@@ -46,6 +49,7 @@ public class SecurityConfig {
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/", true)
+                        .successHandler(loginSuccessHandler) // Custom handler
                         .permitAll())
                 .logout((logout) -> logout.permitAll());
         return http.build();

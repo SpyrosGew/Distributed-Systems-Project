@@ -1,6 +1,7 @@
 package gr.hua.dit.ds.ds_lab_2024.controllers;
 
 import gr.hua.dit.ds.ds_lab_2024.entities.*;
+import gr.hua.dit.ds.ds_lab_2024.repositories.NotificationRepository;
 import gr.hua.dit.ds.ds_lab_2024.repositories.PropertyRepository;
 import gr.hua.dit.ds.ds_lab_2024.repositories.UserRepository;
 import gr.hua.dit.ds.ds_lab_2024.service.PropertyService;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,11 +23,12 @@ public class PropertyController {
     private final PropertyRepository propertyRepository;
     private PropertyService propertyService;
     private UserRepository userRepository;
-
-    public PropertyController(PropertyService propertyService, PropertyRepository propertyRepository, UserRepository userRepository) {
+    private NotificationRepository notificationRepository;
+    public PropertyController(PropertyService propertyService, PropertyRepository propertyRepository, UserRepository userRepository, NotificationRepository notificationRepository) {
         this.propertyService = propertyService;
         this.propertyRepository = propertyRepository;
         this.userRepository = userRepository;
+        this.notificationRepository = notificationRepository;
     }
 
     @Operation(summary = "Show properties", description = "Display properties")
@@ -53,7 +56,6 @@ public class PropertyController {
             properties = propertyService.getPropertiesByRenter((Renter) currentUser);
         }
 
-        System.out.println(properties);
         model.addAttribute("properties", properties);
         return "property/properties";
     }
@@ -70,7 +72,7 @@ public class PropertyController {
         return "index";
     }
 
-    @GetMapping("all_properties")
+    @GetMapping("/properties")
     public String getAllProperties(Model model){
         List<Property> allProperties = propertyService.getAllProperties();
         model.addAttribute("properties", allProperties);
@@ -87,8 +89,13 @@ public class PropertyController {
 
     @Secured("ROLE_ADMIN")
     @Operation(summary = "Approve property", description = "Updates the approval status of a property with the specified ID to 'APPROVED'.")
-    @PostMapping("/property/{id}")
-    public String approveProperty(@PathVariable int property_id, Model model) {
+    @PostMapping("/approve/{id}")
+    public String approveProperty(@PathVariable("id") int property_id, Model model, Authentication authentication) {
+        String username = authentication.getName(); // Should now return the username
+
+        // Fetch the user from the database
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalStateException("User not found"));
 
         Property property = propertyRepository.findById(property_id)
                 .orElseThrow(() -> new IllegalStateException("Property not found"));
@@ -96,12 +103,21 @@ public class PropertyController {
         property.setStatus(Status.APPROVED);
         propertyRepository.save(property);
 
-        model.addAttribute("successMessage", "User approved successfully!");
+        model.addAttribute("successMessage", "Property approved successfully!");
+
+        Notification notification = new Notification();
+        notification.setTask(NotificationTask.VERIFY_NEW_PROPERTY_FROM_ADMIN);
+        notification.setPropertyId(property_id);
+        notification.setSender(currentUser); // Admin
+        notification.setReceiver(property.getOwner());
+        notification.setStatus(Status.ACCEPTED);
+        notificationRepository.save(notification);
+
 
         List<Property> properties = propertyRepository.findAll();
         model.addAttribute("properties", properties);
 
-        return "/property";
+        return "/property/properties";
     }
 
     @Operation(summary = "Show all properties", description = "Displays a list of all properties stored in the system.")
@@ -140,9 +156,66 @@ public class PropertyController {
         } else {
             model.addAttribute("error", "Property could not be approved!");
         }
-        List<Property> properties = propertyRepository.findAll();
+        List<Property> properties = propertyService.getAllProperties();
         model.addAttribute("properties", properties);
         return "index";
+    }
+
+    @Operation(summary = "Delete Property", description = "Delete property. Admin and Owner can do this")
+    @PostMapping("/remove/{id}")
+    public String removeProperty(@PathVariable("id") int propertyId, Authentication authentication, Model model) {
+        Property property = propertyService.getProperty(propertyId);
+        propertyRepository.delete(property);
+        model.addAttribute("successMessage", "Property deleted successfully!");
+
+        String username = authentication.getName();
+
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalStateException("User not found"));
+
+        boolean isOwner = currentUser.getRoles().stream()
+                .map(Role::getName)
+                .anyMatch(role -> role.equals("ROLE_OWNER"));
+
+        boolean isAdmin = currentUser.getRoles().stream()
+                .map(Role::getName)
+                .anyMatch(role -> role.equals("ROLE_ADMIN"));
+
+        List<Property> properties;
+        if(isOwner) {
+            properties = propertyService.getPropertiesByOwner((Owner) currentUser);
+            model.addAttribute("properties", properties);
+            model.addAttribute("successMessage", "Property deleted successfully!");
+            return "/property/properties";
+        } else if(isAdmin) {
+            properties = propertyRepository.findAll();
+            model.addAttribute("properties", properties);
+            model.addAttribute("successMessage", "Property deleted successfully!");
+            return "/property/properties";
+        }
+        model.addAttribute("successMessage", "Property could not be removed!");
+        return "/property/properties";
+    }
+
+    @Secured("ROLE_OWNER")
+    @Operation(summary = "Remove renter from property", description = "Remove the renter of the property")
+    @PostMapping("/removeRenter/{id}")
+    public String removeRenter(@PathVariable("id") int propertyId, Authentication authentication, Model model) {
+        Property property = propertyService.getProperty(propertyId);
+        property.setRenter(null);
+
+        String username = authentication.getName(); // Should now return the username
+
+        // Fetch the user from the database
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalStateException("User not found"));
+
+        List<Property> properties = propertyService.getPropertiesByOwner((Owner) currentUser);
+
+        model.addAttribute("properties", properties);
+        model.addAttribute("successMessage", "Renter removed successfully!");
+        return "property/properties";
+
     }
 
 }

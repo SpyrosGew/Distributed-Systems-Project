@@ -21,6 +21,9 @@
   <div th:if="${#lists.isEmpty(notifications)}" class="no-notifications">
     <p>You have no notifications!</p>
   </div>
+  <form th:action="@{/notifications/clear}" method="post">
+    <button type="submit">Clear Notifications</button>
+  </form>
 </div>
 </body>
 </html>

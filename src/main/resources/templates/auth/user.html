@@ -26,6 +26,10 @@
       <label for="lastName">Email</label>
       <input type="text" id="lastName" class="form-control" th:field="*{email}">
     </div>
+    <!-- Hidden Role Field -->
+    <div class="form-group">
+      <input type="hidden" name="role" th:value="${role}" />
+    </div>
 
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>

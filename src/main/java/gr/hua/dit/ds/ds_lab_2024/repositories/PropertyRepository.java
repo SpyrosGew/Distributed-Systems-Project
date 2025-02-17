@@ -12,10 +12,13 @@ public interface PropertyRepository extends JpaRepository<Property, Integer> {
     @Query("SELECT p FROM Property p WHERE p.owner = :owner")
     List<Property> findPropertiesByOwner(@Param("owner") Owner owner);
 
-    @Query("SELECT p FROM Property p JOIN p.renters r WHERE r = :renter")
+    @Query("SELECT p FROM Property p JOIN p.renter r WHERE r = :renter")
     List<Property> findPropertiesByRenter(@Param("renter") Renter renter);
 
     @Query("SELECT p FROM Property p WHERE p.status <> :status")
     List<Property> findAllNotInProcess(@Param("status") Status status);
+
+    @Query("SELECT p FROM Property p WHERE p.renter IS NULL")
+    List<Property> findAvailableProperties();  // Fetch properties without a renter
 
 }

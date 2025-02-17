@@ -11,6 +11,9 @@
 </head>
 <body>
 <div layout:fragment="main-content">
+    <div th:if="${successMessage}">
+        <p class="alert alert-success" th:text="${successMessage}"></p>
+    </div>
     <div class="my-properties-table">
         <div th:if="${not #lists.isEmpty(properties)}">
             <table class="table">
@@ -19,6 +22,8 @@
                     <th>Address</th>
                     <th>City</th>
                     <th>Square Meters</th>
+                    <th>Price</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -27,7 +32,32 @@
                     <td th:text="${property.address}"></td>
                     <td th:text="${property.city}"></td>
                     <td th:text="${property.squareMeters}"></td>
-                    <td th:text="${property.available}"></td>
+                    <td th:text="${property.price}">$</td>
+                    <td th:text="${property.status}"></td>
+                    <td>
+                        <!-- Remove Property Button -->
+                        <form th:action="@{/property/remove/{id}(id=${property.id})}" method="post"
+                              sec:authorize="hasAnyRole('OWNER','ADMIN')"
+                              onsubmit="return confirm('Are you sure you want to remove this property?');">
+                            <button type="submit" class="btn btn-info action-btn">Remove</button>
+                        </form>
+
+                        <!-- Approve Property Button (Only if Status is IN_PROCESS) -->
+                        <form th:if="${property.status.name() == 'IN_PROCESS'}"
+                              th:action="@{/property/approve/{id}(id=${property.id})}" method="post"
+                              sec:authorize="hasRole('ADMIN')"
+                              onsubmit="return confirm('Are you sure you want to approve this property?');">
+                            <button type="submit" class="btn btn-info action-btn">Approve</button>
+                        </form>
+
+                        <!-- Remove Renter Button -->
+                        <form th:if="${property.renter != null}"
+                              th:action="@{/property/removeRenter/{id}(id=${property.id})}" method="post"
+                              sec:authorize="hasRole('OWNER')"
+                              onsubmit="return confirm('Are you sure you want to remove the renter?');">
+                            <button type="submit" class="btn btn-info action-btn">Remove Renter</button>
+                        </form>
+                    </td>
                 </tr>
                 </tbody>
             </table>
