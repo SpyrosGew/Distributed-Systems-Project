@@ -14,6 +14,9 @@
         <div th:if="${param.error}">
             Invalid username and password.
         </div>
+        <div th:if="${param.msg}">
+            <p th:text="${msg}"></p>
+        </div>
         <h3>User Registration</h3>
         <form th:action="@{/saveUser}" method="post" th:object="${user}">
             <div th:if="${error}" class="error-message">

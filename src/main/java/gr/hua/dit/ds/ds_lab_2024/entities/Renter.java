@@ -22,8 +22,8 @@ public class Renter extends User{
         this.applications = applications;
     }
 
-    @ManyToMany(mappedBy = "renters", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Property> rentedProperties;
+    @OneToMany(mappedBy = "renter", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Property> rentedProperties; // One renter -> Many properties
 
     public Renter(String name, String email, String password){
         super(name, email,password,Status.IN_PROCESS);

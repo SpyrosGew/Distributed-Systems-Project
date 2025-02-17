@@ -61,6 +61,12 @@ public class PropertyService {
     public List<Property> getPropertiesByRenter(Renter renter) {
         return propertyRepository.findPropertiesByRenter(renter);
     }
+
+    @Transactional
+    public List<Property> getAvailableProperties(){
+        return propertyRepository.findAvailableProperties();
+    }
+
     @Transactional
     public Property getProperty(Integer propertyId){
         return propertyRepository.findById(propertyId).get();

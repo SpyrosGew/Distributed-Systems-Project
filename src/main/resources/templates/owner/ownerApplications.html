@@ -34,9 +34,9 @@
                     <td th:if="${app.property != null}" th:text="${app.property.isAvailable} ? 'Yes' : 'No'"></td>
                     <td>
                         <!-- View Button -->
-                        <a th:href="@{/applications/view/{id}(id=${app.id})}" class="btn btn-info action-btn">View</a>
+                        <a th:href="@{/application/view/{id}(id=${app.id})}" class="btn btn-info action-btn">View</a>
                         <!-- Approve Button -->
-                        <form th:action="@{/applications/approve/{id}(id=${app.id})}" method="post" style="display:inline;">
+                        <form   th:action="@{/application/approve/{id}(id=${app.id})}" method="post" style="display:inline;">
                             <button type="submit" class="btn btn-success action-btn">Approve</button>
                         </form>
                     </td>

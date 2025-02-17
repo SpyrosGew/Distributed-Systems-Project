@@ -40,26 +40,26 @@
     </div>
 
 
-  <script>
-    document.getElementById('filterForm').addEventListener('submit', function (event) {
-      // Get all input fields
-      const city = document.querySelector('input[name="city"]').value.trim();
-      const minPrice = document.querySelector('input[name="minPrice"]').value.trim();
-      const maxPrice = document.querySelector('input[name="maxPrice"]').value.trim();
-      const type = document.querySelector('select[name="type"]').value;
+    <script>
+      document.getElementById('filterForm').addEventListener('submit', function (event) {
+        // Get all input fields
+        const city = document.querySelector('input[name="city"]').value.trim();
+        const minPrice = document.querySelector('input[name="minPrice"]').value.trim();
+        const maxPrice = document.querySelector('input[name="maxPrice"]').value.trim();
+        const type = document.querySelector('select[name="type"]').value;
 
-      // Check if all fields are empty
-      if (!city && !minPrice && !maxPrice && !type) {
-        // Prevent form submission
-        event.preventDefault();
-        // Show error message
-        document.getElementById('errorMessage').style.display = 'block';
-      } else {
-        // Hide error message if it was previously shown
-        document.getElementById('errorMessage').style.display = 'none';
-      }
-    });
-  </script>
+        // Check if all fields are empty
+        if (!city && !minPrice && !maxPrice && !type) {
+          // Prevent form submission
+          event.preventDefault();
+          // Show error message
+          document.getElementById('errorMessage').style.display = 'block';
+        } else {
+          // Hide error message if it was previously shown
+          document.getElementById('errorMessage').style.display = 'none';
+        }
+      });
+    </script>
 
     <!-- PROPERTY LISTINGS -->
     <div class="property-listings">

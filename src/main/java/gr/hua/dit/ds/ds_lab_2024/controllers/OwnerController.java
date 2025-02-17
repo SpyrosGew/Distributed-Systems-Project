@@ -33,14 +33,5 @@ public class OwnerController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("applications")
-    public String getOwnerApplications(Model model, Authentication authentication) {
-        String username = authentication.getName();
 
-        User currentUser = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalStateException("User not found"));
-        List<Application> ownersApplications = applicationService.getOwnersApplications((Owner) currentUser);
-        model.addAttribute("ownersApplications", ownersApplications);
-        return "owner/ownerApplications";
-    }
 }

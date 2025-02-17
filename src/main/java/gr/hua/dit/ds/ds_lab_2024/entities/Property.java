@@ -27,13 +27,9 @@ public class Property {
     @JoinColumn(name = "owner_id") // This creates the foreign key column "owner_id" in the Property table
     private Owner owner;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "property_renter",
-            joinColumns = @JoinColumn(name = "property_id"),
-            inverseJoinColumns = @JoinColumn(name = "renter_id")
-    )
-    private List<Renter> renters;  // Renters associated with the property
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "renter_id") // Foreign key column "renter_id"
+    private Renter renter;  // Each property is rented by only one renter
 
 
     @Column(name = "status")
@@ -51,6 +47,8 @@ public class Property {
     @Column(name = "type")
     private String type; // Example values: "apartment", "house"
 
+
+
     public Property() {
     }
 
@@ -61,6 +59,18 @@ public class Property {
         this.city = city;
         this.price = price;
         this.type = type;
+    }
+
+    public Renter getRenter() {
+        return renter;
+    }
+
+    public void setRenter(Renter renter) {
+        this.renter = renter;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 
     public String getType() {

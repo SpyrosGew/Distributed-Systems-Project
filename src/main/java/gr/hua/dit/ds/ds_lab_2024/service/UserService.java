@@ -99,8 +99,8 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public Object getUser(Integer userId) {
-        return userRepository.findById(userId).get();
+    public User getUser(Integer userId) {
+        return userRepository.findUserById(userId);
     }
 
     @Transactional
@@ -120,6 +120,7 @@ public class UserService implements UserDetailsService {
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         renter.setRoles(roles);
+        renter.setApprovalStatus(Status.IN_PROCESS);
 
         userRepository.save(renter);  // Save the User (base class)
         renterRepository.save(renter); // Save the Renter-specific data
@@ -135,6 +136,7 @@ public class UserService implements UserDetailsService {
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         owner.setRoles(roles);
+        owner.setApprovalStatus(Status.IN_PROCESS);
 
         userRepository.save(owner);  // Save the User (base class)
         ownerRepository.save(owner); // Save the Renter-specific data
@@ -143,6 +145,11 @@ public class UserService implements UserDetailsService {
     @Transactional
     public List<Notification> getUsersNotification(Integer id){
         return userDAO.getUserNotifications(id);
+    }
+
+    @Transactional
+    public User findUserByRole(String Role){
+        return userRepository.findByRoleName(Role);
     }
 
 

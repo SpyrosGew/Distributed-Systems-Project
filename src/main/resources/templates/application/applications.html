@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      layout:decorate="~{page_layout/layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <title>My Applications</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<div layout:fragment="main-content">
+  <div class="my-applications-table">
+    <h2>My Applications</h2>
+
+    <div th:if="${not #lists.isEmpty(applications)}">
+      <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+        <tr>
+          <th>Renter Id</th>
+          <th>Property</th>
+          <th>Price</th>
+          <th>Available</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="app : ${applications}">
+          <td th:if="${app.renter != null}" th:text="${app.renter.id}"></td>
+          <td th:if="${app.property != null}" th:text="${app.property.address}"></td>
+          <td th:if="${app.property != null}" th:text="${app.property.price}"></td>
+          <td th:if="${app.property != null}" th:text="${app.property.isAvailable} ? 'Yes' : 'No'"></td>
+          <td>
+            <!-- Approve Button -->
+            <form   th:action="@{/application/approve/{id}(id=${app.id})}" method="post" style="display:inline;">
+              <button type="submit" class="btn btn-success action-btn">Approve</button>
+            </form>
+
+            <!-- Decline Button -->
+            <form   th:action="@{/application/decline/{id}(id=${app.id})}" method="post" style="display:inline;">
+              <button type="submit" class="btn btn-success action-btn">Decline</button>
+            </form>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div th:if="${#lists.isEmpty(applications)}">
+      <p class="text-danger no-applications">No Applications found!</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

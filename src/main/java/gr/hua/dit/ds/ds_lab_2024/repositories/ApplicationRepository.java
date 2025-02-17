@@ -9,4 +9,5 @@ public interface ApplicationRepository extends JpaRepository<Application, Intege
     List<Application> findApplicationsByStatus(Status approvalStatus);
     boolean existsByPropertyAndRenter(Property property, Renter renter);
     List<Application> findByPropertyOwner(Owner owner);
+    Application findApplicationsById(int id);
 }

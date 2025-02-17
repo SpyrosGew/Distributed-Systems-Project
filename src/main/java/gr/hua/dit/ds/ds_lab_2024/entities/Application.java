@@ -24,7 +24,7 @@ public class Application {
     @Column(name = "status")
     private Status status = Status.IN_PROCESS;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "property_id") // This creates the foreign key column "owner_id" in the Property table
     private Property property;
