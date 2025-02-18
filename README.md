@@ -99,10 +99,9 @@ Disclaimer : After you create and account and login the admin of the website has
 ## Admins POV
 
 ### Registration and Login
-At first an admin has to create an account on the website. He can do this by clicking on "Register" on the header
 ![](./images/register.PNG)
 
-Enter your username an email and your password. Make sure select ROLE_ADMIN.
+An admin already exists with Username: Admin Password: 123
 
 Afterwords you can log in the page by pressing "Login" on the header
 ![](./images/login.PNG)
