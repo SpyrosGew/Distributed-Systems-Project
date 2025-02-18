@@ -22,7 +22,8 @@
             <a sec:authorize="hasAnyRole('OWNER', 'RENTER')" class="nav-link" href="/property" data-path="/property">My Properties</a>
             <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/users">Users</a>
             <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/property/properties">All Properties</a>
-            <a sec:authorize="hasRole('OWNER')" class="nav-link" href="/application/applications">Applications</a>
+            <a sec:authorize="hasRole('OWNER')" class="nav-link" href="/application/ownerApplications">Applications</a>
+            <a sec:authorize="hasRole('RENTER')" class="nav-link" href="/application/renterApplications">My Applications</a>
             <a class="nav-link" href="/notifications" data-path="/notifications">Notifications</a>
 
             <span sec:authorize="!isAuthenticated()">
