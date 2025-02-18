@@ -66,7 +66,7 @@
       <div th:each="property : ${properties}" class="property-card">
         <h4 th:text="${property.getAddress()}">Property Name</h4>
         <p th:text="${property.getCity()}">Location</p>
-        <p>Price: <span th:text="${property.getPrice()}">$500</span></p>
+        <p>Price: <span th:text="${#numbers.formatDecimal(property.getPrice(), 1, 'COMMA', 2, 'POINT') + ' $'}"></span></p>
         <!-- Corrected Apply button -->
         <a sec:authorize="hasRole('RENTER')"
            th:href="@{/property/apply/{id}(id=${property.id})}"

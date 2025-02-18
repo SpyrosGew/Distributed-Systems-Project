@@ -64,7 +64,7 @@ public class PropertyService {
 
     @Transactional
     public List<Property> getAvailableProperties(){
-        return propertyRepository.findAvailableProperties();
+        return propertyRepository.findAvailableProperties(Status.APPROVED);
     }
 
     @Transactional

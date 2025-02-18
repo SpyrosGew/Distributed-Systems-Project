@@ -1,10 +1,12 @@
 package gr.hua.dit.ds.ds_lab_2024.controllers;
 
 import gr.hua.dit.ds.ds_lab_2024.entities.*;
+import gr.hua.dit.ds.ds_lab_2024.repositories.ApplicationRepository;
 import gr.hua.dit.ds.ds_lab_2024.repositories.NotificationRepository;
 import gr.hua.dit.ds.ds_lab_2024.repositories.PropertyRepository;
 import gr.hua.dit.ds.ds_lab_2024.repositories.UserRepository;
 import gr.hua.dit.ds.ds_lab_2024.service.PropertyService;
+import gr.hua.dit.ds.ds_lab_2024.service.UserService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.parameters.P;
@@ -21,14 +23,18 @@ import java.util.List;
 @RequestMapping("/property")
 public class PropertyController {
     private final PropertyRepository propertyRepository;
+    private final UserService userService;
     private PropertyService propertyService;
     private UserRepository userRepository;
     private NotificationRepository notificationRepository;
-    public PropertyController(PropertyService propertyService, PropertyRepository propertyRepository, UserRepository userRepository, NotificationRepository notificationRepository) {
+    private ApplicationRepository applicationRepository;
+    public PropertyController(PropertyService propertyService, PropertyRepository propertyRepository, UserRepository userRepository, NotificationRepository notificationRepository, ApplicationRepository applicationRepository, UserService userService) {
         this.propertyService = propertyService;
         this.propertyRepository = propertyRepository;
         this.userRepository = userRepository;
         this.notificationRepository = notificationRepository;
+        this.applicationRepository = applicationRepository;
+        this.userService = userService;
     }
 
     @Operation(summary = "Show properties", description = "Display properties")
@@ -120,7 +126,7 @@ public class PropertyController {
         return "/property/properties";
     }
 
-    @Operation(summary = "Show all properties", description = "Displays a list of all properties stored in the system.")
+    @Operation(summary = "Show property form", description = "Displays the form where an owner can add a property.")
     @GetMapping("/new")
     public String addProperty(Model model) {
         Property property = new Property();
@@ -138,8 +144,17 @@ public class PropertyController {
                 .orElseThrow(() -> new IllegalStateException("User not found"));
         property.setOwner((Owner) currentUser);
         propertyService.saveProperty(property);
-        model.addAttribute("properties", propertyService.getProperties());
-        model.addAttribute("successMessage", "Property added successfully!");
+        model.addAttribute("properties", propertyService.getPropertiesByOwner((Owner) currentUser));
+        model.addAttribute("successMessage", "Property added successfully! Waiting for admin approval...");
+
+        Notification notification = new Notification();
+        notification.setTask(NotificationTask.VERIFY_NEW_PROPERTY_FROM_OWNER);
+        notification.setPropertyId(property.getId());
+        notification.setSender(currentUser);
+        notification.setReceiver(userService.findUserByRole("ROLE_ADMIN"));
+        notificationRepository.save(notification);
+
+
         return "property/properties";
     }
 
@@ -156,7 +171,7 @@ public class PropertyController {
         } else {
             model.addAttribute("error", "Property could not be approved!");
         }
-        List<Property> properties = propertyService.getAllProperties();
+        List<Property> properties = propertyService.getAvailableProperties();
         model.addAttribute("properties", properties);
         return "index";
     }
@@ -165,6 +180,11 @@ public class PropertyController {
     @PostMapping("/remove/{id}")
     public String removeProperty(@PathVariable("id") int propertyId, Authentication authentication, Model model) {
         Property property = propertyService.getProperty(propertyId);
+
+        // Remove references to this property in the application table
+        List<Application> applications = applicationRepository.findByProperty(property);
+        applicationRepository.deleteAll(applications);
+
         propertyRepository.delete(property);
         model.addAttribute("successMessage", "Property deleted successfully!");
 
@@ -180,6 +200,7 @@ public class PropertyController {
         boolean isAdmin = currentUser.getRoles().stream()
                 .map(Role::getName)
                 .anyMatch(role -> role.equals("ROLE_ADMIN"));
+
 
         List<Property> properties;
         if(isOwner) {

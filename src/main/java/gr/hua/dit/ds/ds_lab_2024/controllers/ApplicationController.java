@@ -35,7 +35,7 @@ public class ApplicationController {
     }
 
     @Operation(summary = "Get Owners applications", description = "Get owners applications that have not been approved")
-    @GetMapping("/applications")
+    @GetMapping("/ownerApplications")
     public String getOwnerApplications(Model model, Authentication authentication) {
         String username = authentication.getName();
 
@@ -43,6 +43,17 @@ public class ApplicationController {
                 .orElseThrow(() -> new IllegalStateException("User not found"));
         List<Application> ownersApplications = applicationService.getOwnersApplications((Owner) currentUser);
         model.addAttribute("applications", ownersApplications);
+        return "application/applications";
+    }
+
+    @GetMapping("/renterApplications")
+    public String getRentersApplications(Model model, Authentication authentication) {
+        String username = authentication.getName();
+
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalStateException("User not found"));
+        List<Application> rentersApplications = applicationService.getRentersApplications((Renter) currentUser);
+        model.addAttribute("applications", rentersApplications);
         return "application/applications";
     }
 
@@ -75,6 +86,7 @@ public class ApplicationController {
         notification.setPropertyId(application.getProperty().getId());
 
         notificationRepository.save(notification);
+        model.addAttribute("applications", applicationService.getOwnersApplications((Owner) currentUser));
 
 
         return "application/applications";
@@ -92,6 +104,7 @@ public class ApplicationController {
         List<Application> ownersApplications = applicationService.getOwnersApplications((Owner) currentUser);
         model.addAttribute("applications", ownersApplications);
         model.addAttribute("successMessage", "Application Declined");
+
 
         return "application/applications";
     }
