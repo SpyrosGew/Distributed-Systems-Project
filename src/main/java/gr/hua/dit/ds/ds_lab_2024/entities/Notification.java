@@ -1,6 +1,7 @@
 package gr.hua.dit.ds.ds_lab_2024.entities;
 
 import com.fasterxml.jackson.databind.annotation.JsonAppend;
+import gr.hua.dit.ds.ds_lab_2024.service.PropertyService;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -36,7 +37,8 @@ public class Notification {
     @Column(name = "property_id")
     private Integer propertyId;
 
-    public Notification(User sender, User receiver, NotificationTask task, Status status){
+
+    public Notification(User sender, User receiver, NotificationTask task, Status status) {
         this.sender = sender;
         this.receiver = receiver;
         this.task = task;
@@ -81,9 +83,9 @@ public class Notification {
             return "from: " + sender.getUsername() +"\n\n"+ "To the most dearest admin. Please verify my new property with id" + getPropertyId();
 
         } else if(getTask() == NotificationTask.VERIFY_NEW_PROPERTY_FROM_ADMIN) {
-            if (getStatus() == Status.ACCEPTED){
-                return "To the most dearest owner " + receiver.getUsername() + " your new property with id " + getPropertyId() + "has been accepted";
-            }else if(getStatus() == Status.DECLINED){
+            if (getStatus() == Status.ACCEPTED) {
+                return "To the most dearest owner your new property with id " + getPropertyId() + " has been accepted";
+            } else if (getStatus() == Status.DECLINED) {
                 return "To the most dearest owner " + receiver.getUsername() + " your new property with id " + getPropertyId() + "has been declined";
             }
         }

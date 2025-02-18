@@ -18,7 +18,8 @@ public interface PropertyRepository extends JpaRepository<Property, Integer> {
     @Query("SELECT p FROM Property p WHERE p.status <> :status")
     List<Property> findAllNotInProcess(@Param("status") Status status);
 
-    @Query("SELECT p FROM Property p WHERE p.renter IS NULL")
-    List<Property> findAvailableProperties();  // Fetch properties without a renter
+    @Query("SELECT p FROM Property p WHERE p.renter IS NULL AND p.status = :status")
+    List<Property> findAvailableProperties(@Param("status") Status status);
+
 
 }

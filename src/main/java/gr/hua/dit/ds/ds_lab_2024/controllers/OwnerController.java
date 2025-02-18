@@ -24,14 +24,4 @@ import java.util.List;
 public class OwnerController {
 
 
-    private OwnerService ownerService;
-    private ApplicationService applicationService;
-    private UserRepository userRepository;
-    public OwnerController(OwnerService ownerService, ApplicationService applicationService, UserRepository userRepository) {
-        this.ownerService = ownerService;
-        this.applicationService = applicationService;
-        this.userRepository = userRepository;
-    }
-
-
 }

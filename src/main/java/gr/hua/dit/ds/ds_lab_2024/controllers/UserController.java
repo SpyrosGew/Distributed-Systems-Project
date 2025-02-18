@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /*
 * Access API Documentation
@@ -45,7 +46,14 @@ public class UserController {
     @GetMapping("/register")
     public String register(Model model) {
         User user = new User();
-        model.addAttribute("roles", roleRepository.findAll());
+        // Filter roles to only include RENTER and OWNER
+        List<Role> allowedRoles = roleRepository.findAll().stream()
+                .filter(role -> role.getName().equalsIgnoreCase("ROLE_RENTER") || role.getName().equalsIgnoreCase("ROLE_OWNER"))
+                .collect(Collectors.toList());
+
+        System.out.println(allowedRoles);
+
+        model.addAttribute("roles", allowedRoles);
         model.addAttribute("user", user);
         return "auth/register";
     }

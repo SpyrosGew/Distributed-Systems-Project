@@ -24,6 +24,7 @@
           <th>Price</th>
           <th>Available</th>
           <th>Actions</th>
+          <th>Status</th>
         </tr>
         </thead>
         <tbody>
@@ -32,14 +33,15 @@
           <td th:if="${app.property != null}" th:text="${app.property.address}"></td>
           <td th:if="${app.property != null}" th:text="${app.property.price}"></td>
           <td th:if="${app.property != null}" th:text="${app.property.isAvailable} ? 'Yes' : 'No'"></td>
+          <td th:text="${app.status}"></td>
           <td>
             <!-- Approve Button -->
-            <form   th:action="@{/application/approve/{id}(id=${app.id})}" method="post" style="display:inline;">
+            <form   sec:authorize="hasRole('OWNER')" th:action="@{/application/approve/{id}(id=${app.id})}" method="post" style="display:inline;">
               <button type="submit" class="btn btn-success action-btn">Approve</button>
             </form>
 
             <!-- Decline Button -->
-            <form   th:action="@{/application/decline/{id}(id=${app.id})}" method="post" style="display:inline;">
+            <form sec:authorize="hasRole('OWNER')" th:action="@{/application/decline/{id}(id=${app.id})}" method="post" style="display:inline;">
               <button type="submit" class="btn btn-success action-btn">Decline</button>
             </form>
           </td>

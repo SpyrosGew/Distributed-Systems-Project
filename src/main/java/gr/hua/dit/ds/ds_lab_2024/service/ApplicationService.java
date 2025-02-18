@@ -2,6 +2,7 @@ package gr.hua.dit.ds.ds_lab_2024.service;
 
 import gr.hua.dit.ds.ds_lab_2024.entities.Application;
 import gr.hua.dit.ds.ds_lab_2024.entities.Owner;
+import gr.hua.dit.ds.ds_lab_2024.entities.Renter;
 import gr.hua.dit.ds.ds_lab_2024.entities.Status;
 import gr.hua.dit.ds.ds_lab_2024.repositories.ApplicationRepository;
 import gr.hua.dit.ds.ds_lab_2024.repositories.NotificationRepository;
@@ -41,7 +42,11 @@ public class ApplicationService {
     public List<Application> getOwnersApplications(Owner owner) { // Gets owners applications that have not been approved
         return applicationRepository.findByPropertyOwner(owner)
                 .stream()
-                .filter(app -> app.getStatus() != Status.APPROVED)
+                .filter(app -> app.getStatus() == Status.IN_PROCESS)
                 .collect(Collectors.toList());
+    }
+    @Transactional
+    public List<Application> getRentersApplications(Renter renter) {
+        return applicationRepository.findByRenter(renter);
     }
 }

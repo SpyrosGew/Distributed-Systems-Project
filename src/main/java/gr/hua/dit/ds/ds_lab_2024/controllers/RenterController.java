@@ -9,9 +9,4 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/renter")
 public class RenterController {
 
-
-//    @GetMapping("/newApplication")
-//    public String showApplicationForm(Model model) {
-//        return "Renter/ApplicationForm";
-//    }
 }
